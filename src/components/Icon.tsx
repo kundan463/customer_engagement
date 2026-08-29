@@ -34,6 +34,8 @@ const P: Record<string, string> = {
   lock: 'M6 10.5h12v10H6zM8.5 10.5V7a3.5 3.5 0 1 1 7 0v3.5M12 14.5v2.5',
   shield: 'M12 3l7.5 3v5.5c0 4.4-3 8.1-7.5 9.5-4.5-1.4-7.5-5.1-7.5-9.5V6L12 3Z',
   check: 'M12 3l7.5 3v5.5c0 4.4-3 8.1-7.5 9.5-4.5-1.4-7.5-5.1-7.5-9.5V6L12 3ZM9 12l2 2 4-4',
+  /* A bare tick. `check` is a shield-with-tick and turns to mush below ~16px. */
+  tick: 'M5 12.5l4.5 4.5L19 7',
   server: 'M4 4.5h16v5H4zM4 14.5h16v5H4zM7.5 7h.01M7.5 17h.01M11 7h4M11 17h4',
   phone: 'M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A15 15 0 0 1 3 6a2 2 0 0 1 2-2Z',
   mail: 'M3 6.5h18v11H3zM3 7l9 6 9-6',

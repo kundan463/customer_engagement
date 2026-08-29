@@ -2,6 +2,22 @@
    SECTION 2 — the ten-step journey (light)
    ===================================================================== */
 
+/* ---- the stepper ------------------------------------------------------
+   The track sits outside the scroller, so it spans the section rather than
+   scrolling away with the steps. The scroller is masked at both ends, which
+   is what tells you there are more steps than fit. */
+
+.jn-railwrap { position: relative; margin-bottom: clamp(30px, 3.6vw, 44px); }
+
+.jn-railwrap::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--rule);
+}
+
 .jn-rail {
   position: relative;
   display: flex;
@@ -9,62 +25,180 @@
   overflow-x: auto;
   scrollbar-width: none;
   padding-bottom: 16px;
-  margin-bottom: 26px;
-  border-bottom: 1px solid var(--rule);
+  scroll-behavior: smooth;
+  --fade-l: #000 0px;
+  --fade-r: #000 100%;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, var(--fade-l), var(--fade-r), transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, var(--fade-l), var(--fade-r), transparent 100%);
 }
+
+/* Only fade an end that actually has steps behind it. */
+.jn-rail[data-edge='left'],
+.jn-rail[data-edge='both'] { --fade-l: #000 42px; }
+
+.jn-rail[data-edge='right'],
+.jn-rail[data-edge='both'] { --fade-r: #000 calc(100% - 56px); }
 
 .jn-rail::-webkit-scrollbar { display: none; }
 
-.jn-rail-track { position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; }
+.jn-rail-track {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  border-radius: 2px;
+  overflow: hidden;
+  pointer-events: none;
+}
 
-.jn-rail-fill { display: block; height: 100%; background: var(--orange); transition: width 0.45s var(--ease); }
+.jn-rail-fill {
+  display: block;
+  height: 100%;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #FBA36A, var(--orange));
+  box-shadow: 0 0 0 1px rgba(242, 107, 29, 0.18);
+  transition: width 0.62s var(--ease);
+}
 
 .jn-step {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 9px;
   flex: none;
-  height: 40px;
-  padding: 0 14px 0 7px;
+  height: 42px;
+  padding: 0 15px 0 7px;
   border-radius: 999px;
   border: 1px solid transparent;
   color: var(--mut);
-  transition: color 0.2s, background 0.2s, border-color 0.2s;
+  /* Colour is deliberately NOT transitioned. It is the "you are here"
+     signal, and a starved transition — a backgrounded tab, an interrupted
+     compositor — can leave the label resting at an intermediate value:
+     white on the cream band, or slate on the navy pill. The fill animates;
+     the text snaps. */
+  transition: background 0.24s, border-color 0.24s,
+              box-shadow 0.24s, transform 0.24s var(--ease);
 }
 
-.jn-step:hover { color: var(--ink); background: var(--white); }
+.jn-step:hover { color: var(--ink); background: var(--white); transform: translateY(-1px); }
 
 .jn-step-n {
   display: grid;
   place-items: center;
-  width: 24px;
-  height: 24px;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
   border: 1.5px solid var(--rule-2);
   background: var(--white);
   font-size: 10px;
   font-weight: 600;
   flex: none;
-  transition: all 0.24s var(--ease);
+  transition: border-color 0.28s var(--ease), background 0.28s var(--ease),
+              transform 0.28s var(--ease);
 }
 
-.jn-step-name { font-size: 13px; font-weight: 400; white-space: nowrap; }
+.jn-step-name { font-size: 13px; font-weight: 450; white-space: nowrap; }
 
-.jn-step.is-done .jn-step-n { border-color: var(--orange); color: var(--orange-text); }
+/* Behind you: the step is settled, so the chip fills and the tick replaces
+   the number. */
+.jn-step.is-done .jn-step-n {
+  border-color: var(--orange);
+  background: var(--orange);
+  color: var(--on-orange);
+}
 
-.jn-step.is-active { color: var(--ink); background: var(--white); border-color: var(--rule-2); }
+.jn-step.is-done .jn-step-n .ico { stroke-width: 2.6; }
 
-.jn-step.is-active .jn-step-n { border-color: var(--orange); background: var(--orange); color: var(--on-orange); }
+/* Where you are: the one unmistakable mark on the rail. Everything else on
+   this band is white-on-bone, so navy reads instantly. */
+.jn-step.is-active {
+  color: #fff;
+  background: linear-gradient(180deg, #16386B 0%, var(--navy) 100%);
+  border-color: transparent;
+  box-shadow: var(--sh-navy);
+}
 
-.jn-body { display: grid; gap: 22px; animation: stageIn 0.42s var(--ease); }
+.jn-step.is-active:hover { transform: none; }
+
+.jn-step.is-active .jn-step-n {
+  border-color: transparent;
+  background: var(--orange);
+  color: var(--on-orange);
+  transform: scale(1.06);
+}
+
+.jn-step.is-active .jn-step-name { font-weight: 500; }
+
+/* ---- the step body ----------------------------------------------------
+   Everything below is keyed on the step, so it remounts and replays. The
+   pieces arrive in reading order rather than all at once, and they arrive
+   from the side you travelled from. */
+
+.jn-body {
+  display: grid;
+  gap: 22px;
+  --from: 22px;
+}
+
+.jn-body[data-dir='prev'] { --from: -22px; }
+
+@keyframes jnEnter {
+  from { opacity: 0; transform: translate3d(var(--from, 22px), 0, 0); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes jnRise {
+  from { opacity: 0; transform: translate3d(0, 10px, 0); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes jnGrow {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+.jn-copy-top,
+.jn-title,
+.jn-text,
+.jn-metrics,
+.jn-nav,
+.jn-card,
+.jn-chat { animation: jnEnter 0.52s var(--ease) both; }
+
+/* Reading order, left column first — the eye is led down the copy and then
+   across to the evidence. */
+.jn-copy-top { animation-delay: 0.02s; }
+.jn-title    { animation-delay: 0.07s; }
+.jn-text     { animation-delay: 0.12s; }
+.jn-metrics  { animation-delay: 0.17s; }
+.jn-nav      { animation-delay: 0.22s; }
+.jn-card     { animation-delay: 0.10s; }
+.jn-chat     { animation-delay: 0.20s; }
 
 @media (min-width: 1000px) {
   .jn-body { grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr); gap: 36px; align-items: start; }
 }
 
-.jn-copy-top { display: flex; align-items: center; gap: 13px; margin-bottom: 14px; }
+.jn-copy-top { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
 
-.jn-big { font-family: var(--display); font-size: 38px; font-weight: 500; line-height: 1; letter-spacing: -0.035em; color: var(--faint); }
+/* A hairline between the numeral and the channel pill, so the row reads as
+   one chapter marker rather than two loose chips. */
+.jn-copy-rule {
+  flex: 1;
+  max-width: 46px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--peach-2), var(--rule));
+}
+
+.jn-big {
+  font-family: var(--display);
+  font-size: clamp(38px, 4vw, 46px);
+  font-weight: 500;
+  line-height: 0.9;
+  letter-spacing: -0.035em;
+  color: var(--orange-display);
+  font-variant-numeric: lining-nums;
+}
 
 .jn-title {
   font-family: var(--display);
@@ -84,6 +218,8 @@
 
 .jn-metrics-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 13px; }
 
+.jn-metric { animation: jnRise 0.5s var(--ease) both; animation-delay: calc(0.26s + var(--i, 0) * 0.07s); }
+
 .jn-metric-v {
   display: block;
   font-family: var(--display);
@@ -100,16 +236,24 @@
 .jn-arrow {
   display: grid;
   place-items: center;
-  width: 44px;
-  height: 44px;
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
   border: 1px solid var(--rule-2);
   color: var(--ink);
   background: var(--white);
-  transition: border-color 0.18s, opacity 0.18s;
+  box-shadow: var(--sh-1);
+  transition: border-color 0.2s, background 0.2s,
+              box-shadow 0.24s, opacity 0.2s, transform 0.2s var(--ease);
 }
 
-.jn-arrow:hover:not(:disabled) { border-color: var(--ink); }
+.jn-arrow:hover:not(:disabled) {
+  border-color: var(--ink);
+  color: #fff;
+  background: var(--navy);
+  box-shadow: var(--sh-navy);
+  transform: translateY(-1px);
+}
 .jn-arrow:disabled { opacity: 0.32; cursor: not-allowed; }
 .jn-arrow .ico { transform: rotate(180deg); }
 .jn-arrow-next .ico { transform: none; }
@@ -118,7 +262,7 @@
 
 .jn-visuals { display: grid; gap: 14px; }
 
-.jn-card { padding: 14px 16px 15px; }
+.jn-card { padding: 16px 18px 17px; box-shadow: var(--sh-3); }
 
 .jn-card-head {
   display: flex;
@@ -144,6 +288,8 @@
   gap: 16px;
   padding: 7px 0;
   border-bottom: 1px dashed var(--rule);
+  animation: jnRise 0.46s var(--ease) both;
+  animation-delay: calc(0.2s + var(--i, 0) * 0.07s);
 }
 
 .jn-row:last-child { border-bottom: none; }
@@ -160,19 +306,22 @@
 
 .jn-prog-track { flex: 1; height: 4px; border-radius: 999px; background: var(--rule); overflow: hidden; }
 
+/* The body remounts on every step, so a width transition would never run —
+   it would mount already full. Grow it instead. */
 .jn-prog-fill,
 .jn-prog-fill.t-aqua,
 .jn-prog-fill.t-steel {
   display: block;
   height: 100%;
   border-radius: 999px;
-  background: var(--orange);
-  transition: width 0.55s var(--ease);
+  background: linear-gradient(90deg, #FBA36A, var(--orange));
+  transform-origin: left center;
+  animation: jnGrow 0.9s var(--ease) 0.42s both;
 }
 
 .jn-prog-v { font-size: 10.5px; color: var(--mut); flex: none; }
 
-.jn-chat { overflow: hidden; }
+.jn-chat { overflow: hidden; background: linear-gradient(180deg, var(--cream) 0%, #FFFDFA 100%); }
 
 .jn-chat-head {
   padding: 11px 16px;
@@ -185,7 +334,14 @@
 
 .jn-chat-body { padding: 15px 16px; display: flex; flex-direction: column; gap: 11px; }
 
-.jc { display: flex; flex-direction: column; gap: 5px; max-width: 88%; animation: jcIn 0.4s var(--ease) both; }
+.jc {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  max-width: 88%;
+  animation: jcIn 0.44s var(--ease) both;
+  animation-delay: calc(0.3s + var(--i, 0) * 0.1s);
+}
 
 @keyframes jcIn { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: none; } }
 

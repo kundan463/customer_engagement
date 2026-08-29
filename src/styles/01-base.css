@@ -399,6 +399,14 @@ h1, h2, h3, h4 {
 
 /* ---- reveal ----------------------------------------------------------- */
 
+/* The entrance every swapped-in panel shares — the launch step view, the
+   generated workflow, the "Other" field. It was referenced from four places
+   and defined in none, so all four were swapping with no transition at all. */
+@keyframes stageIn {
+  from { opacity: 0; transform: translate3d(0, 10px, 0); }
+  to { opacity: 1; transform: none; }
+}
+
 .reveal {
   opacity: 0;
   transform: translateY(18px);
@@ -414,5 +422,11 @@ h1, h2, h3, h4 {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
+    /* The staggered entrances carry delays of up to 0.42s with fill-mode
+       `both`. Zeroing only the duration would hold each piece at its *from*
+       keyframe — invisible, or a progress bar at scaleX(0) — for the length
+       of its delay. A negative delay starts them already finished. */
+    animation-delay: -1ms !important;
+    transition-delay: 0s !important;
   }
 }
