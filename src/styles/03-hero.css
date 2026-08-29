@@ -1,0 +1,397 @@
+/* =====================================================================
+   SECTION 1 — hero + the customer journey as floating surfaces
+
+   The right column is a phone whose thread accumulates as the journey
+   advances, with three cards floating around it that swap per stage.
+   ===================================================================== */
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding-block: clamp(36px, 5vw, 72px) clamp(48px, 6.5vw, 92px);
+}
+
+.hero-in { position: relative; display: grid; gap: clamp(40px, 5vw, 56px); }
+
+/* Grid items size to their content by default, so one over-wide child (the
+   journey rail) would stretch the whole column past the viewport and get
+   clipped, taking the copy column with it. */
+.hero-in > * { min-width: 0; }
+
+@media (min-width: 1060px) {
+  .hero-in {
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+    align-items: center;
+    gap: 40px;
+  }
+}
+
+.hero-badge { height: 30px; padding: 0 14px; margin-bottom: 20px; }
+
+.hero-h1 {
+  font-size: clamp(38px, 5.6vw, 64px);
+  font-weight: 300;
+  line-height: 1.08;
+  letter-spacing: -0.022em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+.hero-em { color: var(--orange-display); }
+
+.hero-hindi {
+  margin-top: 12px;
+  font-size: clamp(16px, 1.7vw, 19px);
+  font-weight: 500;
+  color: var(--mut);
+}
+
+.hero-sub {
+  margin-top: 18px;
+  font-size: clamp(15px, 1.5vw, 17px);
+  line-height: 1.62;
+  color: var(--mut);
+  max-width: 50ch;
+  text-wrap: pretty;
+}
+
+.hero-verbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  margin-top: 22px;
+  font-size: clamp(16px, 1.8vw, 19px);
+  font-weight: 500;
+  color: var(--ink);
+}
+
+/* A divider is a rule, not a character — drawn, so it isn't text that has to
+   clear a contrast bar it was never meant to carry. */
+.hero-verbs i { width: 1px; height: 17px; background: var(--rule-2); flex: none; }
+
+.hero-cta { margin-top: 26px; }
+
+.hero-proof {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 26px;
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid var(--rule);
+  font-size: 13.5px;
+  color: var(--mut);
+}
+
+.hero-proof strong { color: var(--ink); font-weight: 600; }
+
+/* =====================================================================
+   The visualisation
+   ===================================================================== */
+
+.hv {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+/* ---- the phone --------------------------------------------------------- */
+
+.hv-phone {
+  position: relative;
+  z-index: 2;
+  width: min(300px, 86vw);
+  border-radius: 30px;
+  border: 8px solid var(--ink);
+  background: var(--ink);
+  box-shadow: 0 30px 60px -30px rgba(10, 10, 10, 0.45);
+  overflow: hidden;
+}
+
+.hv-phone-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 14px 11px;
+  background: #0F5C52;
+  color: #fff;
+}
+
+.hv-avatar {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  flex: none;
+  background: #0A423B;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.hv-phone-head > div { display: flex; flex-direction: column; min-width: 0; }
+.hv-phone-head strong { font-size: 13.5px; font-weight: 600; letter-spacing: -0.01em; }
+.hv-phone-head span { font-size: 10.5px; opacity: 0.82; }
+
+.hv-callbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  background: #167D6F;
+  color: #fff;
+  font-size: 11px;
+}
+
+.hv-callbar .ico { flex: none; }
+.hv-callbar-t { margin-left: auto; font-size: 10.5px; opacity: 0.9; }
+
+.hv-thread {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  height: 310px;
+  padding: 14px 12px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  background: #EDE7DE;
+  background-image: radial-gradient(rgba(10, 10, 10, 0.045) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+.hv-thread::-webkit-scrollbar { width: 4px; }
+.hv-thread::-webkit-scrollbar-thumb { background: rgba(10, 10, 10, 0.18); border-radius: 4px; }
+
+.hvm { display: flex; max-width: 86%; }
+.hvm-cx { align-self: flex-end; justify-content: flex-end; }
+.hvm-sys { align-self: center; max-width: 100%; }
+
+.hvm.is-fresh { animation: hvmIn 0.42s var(--ease) both; }
+
+@keyframes hvmIn { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: none; } }
+
+.hvm-bubble {
+  padding: 8px 11px;
+  border-radius: 11px;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--ink);
+  background: #fff;
+  box-shadow: 0 1px 1px rgba(10, 10, 10, 0.12);
+}
+
+.hvm-ai .hvm-bubble { border-top-left-radius: 3px; }
+.hvm-cx .hvm-bubble { background: #DCF3C6; border-top-right-radius: 3px; }
+
+.hvm-sys {
+  display: block;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.78);
+  font-size: 9.5px;
+  line-height: 1.4;
+  text-align: center;
+  color: #5C5C5C;
+  word-break: break-word;
+}
+
+/* ---- the stage rail ---------------------------------------------------- */
+
+.hv-rail {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 8px 8px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--rule);
+  background: var(--white);
+  box-shadow: 0 8px 20px -14px rgba(10, 10, 10, 0.3);
+}
+
+.hv-rail-head { font-size: 9.5px; letter-spacing: 0.14em; color: var(--faint); white-space: nowrap; }
+
+/* Ten dots, a label and a toggle don't fit on one line on a phone. */
+@media (max-width: 560px) {
+  .hv-rail { flex-wrap: wrap; justify-content: center; row-gap: 8px; padding: 10px 12px; border-radius: 18px; }
+  .hv-rail-head { width: 100%; text-align: center; }
+}
+
+.hv-dots { display: flex; align-items: center; gap: 5px; }
+
+.hv-dot {
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  transition: transform 0.2s var(--ease);
+}
+
+.hv-dot::after {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--rule-2);
+  transition: background 0.24s, width 0.24s, height 0.24s;
+}
+
+.hv-dot:hover { transform: scale(1.2); }
+.hv-dot.is-done::after { background: #F6C79B; }
+.hv-dot.is-active::after { background: var(--orange); width: 11px; height: 11px; }
+
+.hv-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 26px;
+  padding: 0 11px;
+  border-radius: 999px;
+  border: 1px solid var(--rule-2);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--mut);
+  transition: color 0.18s, border-color 0.18s;
+}
+
+.hv-toggle:hover { color: var(--ink); border-color: var(--ink); }
+
+/* ---- the floating cards ------------------------------------------------ */
+
+.hv-card {
+  width: 100%;
+  max-width: 300px;
+  padding: 13px 15px;
+  border-radius: 12px;
+  border: 1px solid var(--rule);
+  background: var(--white);
+  box-shadow: 0 14px 32px -20px rgba(10, 10, 10, 0.4);
+}
+
+/* below the phone on small screens, floating around it on large ones */
+@media (max-width: 819px) {
+  .hv-card { order: 3; }
+  .hv-phone { order: 1; }
+  .hv-rail { order: 2; }
+}
+
+@media (min-width: 820px) {
+  .hv { display: block; min-height: 520px; }
+  .hv-phone { width: min(288px, 100%); margin: 34px auto 0; }
+  .hv-rail { margin: 20px auto 0; width: fit-content; }
+
+  /* Offsets are in px, not %, so the cards never ride up over the phone's
+     header — they straddle its edges at the height of the chat thread. */
+  .hv-card { position: absolute; width: clamp(158px, 29%, 190px); z-index: 3; padding: 12px 13px; }
+
+  /* The cards straddle the phone's edges by ~28px. Pad the thread by more
+     than that, so the chat background still runs under them but no message
+     text ever hides behind one. */
+  .hv-thread { padding-inline: 34px; }
+
+  .hv-out { top: 88px; right: 0; }
+  .hv-now { top: 150px; left: 0; }
+  .hv-live { top: 298px; left: 0; }
+}
+
+/* card · where we are */
+.hv-now-step { display: block; font-size: 9.5px; letter-spacing: 0.13em; color: var(--faint); }
+
+.hv-now-title {
+  display: block;
+  margin-top: 5px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.hv-now-line {
+  display: block;
+  margin-top: 4px;
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: var(--mut);
+}
+
+.hv-now-track {
+  display: block;
+  height: 3px;
+  margin-top: 11px;
+  border-radius: 999px;
+  background: var(--rule);
+  overflow: hidden;
+}
+
+.hv-now-track i { display: block; height: 100%; background: var(--orange); transition: width 0.5s var(--ease); }
+
+/* card · the outcome */
+.hv-out {
+  border-color: #F6D5B8;
+  background: var(--orange-tint);
+  animation: hvmIn 0.42s var(--ease) both;
+}
+
+.hv-out-k { display: block; font-size: 9.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--orange-text); }
+
+.hv-out-v {
+  display: block;
+  margin-top: 4px;
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
+
+/* card · the campaign */
+.hv-live-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-bottom: 9px;
+  margin-bottom: 9px;
+  border-bottom: 1px solid var(--rule);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.hv-live-tag {
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: var(--orange-soft);
+  color: var(--orange-text);
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+}
+
+.hv-live dl { display: grid; gap: 6px; }
+.hv-live dl > div { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.hv-live dt { font-size: 11px; color: var(--mut); }
+.hv-live dd { font-size: 11.5px; font-weight: 500; color: var(--ink); text-align: right; }
+
+/* ---- trust bar --------------------------------------------------------- */
+
+.trust { border-block: 1px solid var(--rule); background: var(--bone); padding-block: 20px; }
+
+.trust-in { display: grid; gap: 14px; }
+
+@media (min-width: 900px) {
+  .trust-in { grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 32px; }
+}
+
+.trust-label { font-size: 10px; letter-spacing: 0.15em; color: var(--faint); }
+
+.trust-list { display: flex; flex-wrap: wrap; gap: 9px 28px; }
+
+.trust-item { font-size: 14px; font-weight: 400; color: var(--body); }

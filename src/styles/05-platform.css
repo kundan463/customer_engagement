@@ -1,0 +1,386 @@
+/* =====================================================================
+   SECTION 4 — platform capabilities (light bento)
+   ===================================================================== */
+
+.cap-grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+
+@media (min-width: 900px) {
+  .cap-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .cap { grid-column: span 2; }
+  .cap.is-wide { grid-column: span 3; }
+}
+
+.cap { padding: 22px; }
+
+.cap:hover { transform: translateY(-3px); border-color: var(--rule-2); box-shadow: var(--sh-3); }
+
+.cap-top { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; }
+
+.cap-title { font-size: 17px; font-weight: 500; letter-spacing: -0.02em; color: var(--ink); }
+
+.cap-list { display: grid; gap: 9px; }
+
+.cap-list li { display: flex; align-items: baseline; gap: 10px; font-size: 13.5px; line-height: 1.5; color: var(--mut); }
+
+.cap-tick { flex: none; width: 5px; height: 5px; border-radius: 50%; background: var(--orange); transform: translateY(-2px); }
+
+/* =====================================================================
+   SECTION 5 — agent types
+   ===================================================================== */
+
+.ag-grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(246px, 1fr)); }
+
+.ag { position: relative; display: flex; flex-direction: column; padding: 22px; }
+
+.ag.is-open {
+  transform: translateY(-3px);
+  border-color: #F3C79E;
+  box-shadow: var(--sh-lift);
+}
+
+/* Every agent card is a link into the Telenow console. The affordance stays
+   quiet until the card is the one being looked at. */
+.ag-use {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 14px;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--orange-text);
+  opacity: 0.55;
+  transition: opacity 0.28s var(--ease), gap 0.28s var(--ease);
+}
+
+.ag.is-open .ag-use { opacity: 1; gap: 10px; }
+
+.ag-outcome { margin-top: auto; }
+
+.ag-chip { margin-bottom: 14px; }
+
+.ag-name { font-size: 16.5px; font-weight: 500; letter-spacing: -0.02em; color: var(--ink); }
+
+.ag-purpose { margin-top: 8px; font-size: 13.5px; line-height: 1.55; color: var(--mut); }
+
+.ag-channels { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+
+.ag-ch {
+  height: 23px;
+  padding: 0 9px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 5px;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--mut);
+}
+
+.ag-outcome { margin-top: 15px; padding-top: 13px; border-top: 1px solid var(--rule); }
+
+.ag-outcome span { font-size: 9.5px; letter-spacing: 0.13em; color: var(--faint); }
+
+.ag-outcome p { margin-top: 5px; font-size: 13px; line-height: 1.45; color: var(--orange-text); }
+
+.ag-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-top: 28px;
+  padding: 24px 26px;
+  border: 1px solid var(--rule);
+  border-radius: var(--r-lg);
+  background: var(--orange-tint);
+}
+
+.ag-foot p { font-size: 14px; color: var(--mut); max-width: 58ch; }
+
+/* =====================================================================
+   SECTION 6 — launch steps + product mocks
+   ===================================================================== */
+
+.lx { display: grid; gap: 22px; }
+
+@media (min-width: 1000px) {
+  .lx { grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: 40px; align-items: start; }
+}
+
+.lx-steps { display: grid; gap: 3px; }
+
+.lx-step {
+  display: flex;
+  gap: 14px;
+  width: 100%;
+  text-align: left;
+  padding: 15px 16px;
+  border-radius: var(--r);
+  border: 1px solid transparent;
+  transition: background 0.24s, border-color 0.24s;
+}
+
+.lx-step:hover { background: var(--white); }
+
+.lx-step.is-active { background: var(--white); border-color: var(--rule); box-shadow: var(--sh-2); }
+
+.lx-n {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 29px;
+  height: 29px;
+  border-radius: 999px;
+  border: 1px solid var(--rule-2);
+  background: var(--white);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--mut);
+  transition: all 0.24s var(--ease);
+}
+
+.lx-step.is-active .lx-n { border-color: var(--orange); background: var(--orange); color: #0A0A0A; }
+
+.lx-step-body { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+
+.lx-step-title { font-size: 16px; font-weight: 500; letter-spacing: -0.02em; color: var(--body); transition: color 0.24s; }
+
+.lx-step.is-active .lx-step-title { color: var(--ink); }
+
+.lx-step-text { font-size: 14px; line-height: 1.6; color: var(--mut); }
+
+.lx-path { font-size: 10.5px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--orange-text); line-height: 1.6; }
+
+.lx-view { padding: 14px; animation: stageIn 0.36s var(--ease); }
+
+/* ---- shared mock chrome ---------------------------------------------- */
+
+.mock { display: flex; flex-direction: column; gap: 12px; }
+
+.mock-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 11px;
+  border-bottom: 1px solid var(--rule);
+  font-size: 10.5px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.mock-foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  padding-top: 11px;
+  border-top: 1px solid var(--rule);
+  font-size: 10px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.mock-foot span { display: inline-flex; align-items: center; gap: 6px; }
+.mock-foot .ico { color: var(--orange); }
+
+.mock-label { font-size: 9.5px; letter-spacing: 0.13em; color: var(--faint); }
+
+.mock-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+
+.mock-table th {
+  text-align: left;
+  padding: 0 10px 9px 0;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.mock-table td {
+  padding: 8px 10px 8px 0;
+  border-top: 1px solid var(--rule);
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--body);
+  white-space: nowrap;
+}
+
+.mock-table td.is-dim { color: var(--orange-text); }
+
+.mock-prompt { padding: 13px; border-radius: var(--r); background: var(--paper); border: 1px solid var(--rule); }
+
+.mock-prompt p { margin-top: 7px; font-size: 12.5px; line-height: 1.6; color: var(--mut); }
+
+.mock-toggles { display: grid; gap: 7px; }
+
+.mock-tog { display: flex; align-items: center; gap: 10px; font-size: 12.5px; color: var(--faint); }
+
+.mock-tog.is-on { color: var(--body); }
+
+.mock-sw { position: relative; flex: none; width: 28px; height: 16px; border-radius: 999px; background: var(--rule); transition: background 0.24s; }
+
+.mock-sw::after {
+  content: '';
+  position: absolute;
+  top: 2.5px;
+  left: 2.5px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--faint);
+  transition: transform 0.24s var(--ease), background 0.24s;
+}
+
+.mock-tog.is-on .mock-sw, .mock-chan.is-on .mock-sw { background: #FBD5B5; }
+.mock-tog.is-on .mock-sw::after, .mock-chan.is-on .mock-sw::after { transform: translateX(12px); background: var(--orange); }
+
+.mock-kb > div { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 9px; }
+
+.mock-file {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 24px;
+  padding: 0 9px;
+  border-radius: 5px;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  font-size: 10.5px;
+  color: var(--body);
+}
+
+.mock-file .ico { color: var(--orange-text); }
+
+.mock-chans { display: grid; gap: 7px; }
+
+.mock-chan {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 13px;
+  border-radius: var(--r);
+  border: 1px solid var(--rule);
+  opacity: 0.6;
+  transition: opacity 0.24s, border-color 0.24s;
+}
+
+.mock-chan.is-on { opacity: 1; border-color: var(--rule-2); }
+
+.mock-chan-n { font-size: 10px; color: var(--faint); flex: none; }
+.mock-chan > div { display: flex; flex-direction: column; min-width: 0; }
+.mock-chan strong { font-size: 13.5px; font-weight: 500; color: var(--ink); }
+.mock-chan span:not(.mock-sw):not(.mock-chan-n) { font-size: 11.5px; color: var(--mut); }
+.mock-chan .mock-sw { margin-left: auto; }
+
+.mock-launch-head { display: flex; align-items: baseline; gap: 10px; }
+
+.mock-big { font-size: 32px; font-weight: 300; letter-spacing: -0.035em; color: var(--ink); font-variant-numeric: tabular-nums; }
+
+.mock-launch-head .mono { font-size: 11px; color: var(--faint); letter-spacing: 0.06em; }
+
+.mock-track { height: 6px; margin-top: 11px; border-radius: 999px; background: var(--rule); overflow: hidden; }
+
+.mock-track span { display: block; height: 100%; border-radius: 999px; background: var(--orange); }
+
+.mock-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 15px; }
+
+.mock-stats strong { display: block; font-size: 16px; font-weight: 500; letter-spacing: -0.025em; color: var(--ink); font-variant-numeric: tabular-nums; }
+
+.mock-stats span { font-size: 10.5px; color: var(--mut); }
+
+.mock-tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+
+.mock-tile { padding: 14px; border-radius: var(--r); border: 1px solid var(--rule); background: var(--paper); }
+
+.mock-tile-v { display: block; font-size: 20px; font-weight: 500; letter-spacing: -0.03em; color: var(--ink); font-variant-numeric: tabular-nums; }
+
+.mock-tile.t-rev .mock-tile-v { color: var(--orange-text); }
+
+.mock-tile-l { display: block; margin-top: 4px; font-size: 11.5px; color: var(--mut); }
+
+/* =====================================================================
+   SECTION 7 — architecture
+   ===================================================================== */
+
+.arch { position: relative; max-width: 760px; margin: 0 auto; }
+
+.arch-tier { position: relative; transition: opacity 0.6s var(--ease), transform 0.6s var(--ease); }
+
+.arch-tier-label {
+  display: block;
+  font-size: 9.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--faint);
+  text-align: center;
+  margin-bottom: 9px;
+}
+
+.arch-nodes { display: grid; gap: 9px; }
+
+@media (min-width: 620px) {
+  .arch-nodes[data-count='2'] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .arch-nodes[data-count='3'] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+.arch-node {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 14px;
+  border-radius: var(--r);
+  border: 1px solid var(--rule);
+  background: var(--white);
+  transition: border-color 0.24s, transform 0.24s var(--ease);
+}
+
+.arch-node:hover { transform: translateY(-2px); border-color: var(--rule-2); box-shadow: var(--sh-2); }
+
+.arch-node.is-hero,
+.arch-node.t-aqua.is-hero,
+.arch-node.t-steel.is-hero { border-color: var(--orange); background: var(--orange-tint); }
+
+.arch-node .chip { width: 33px; height: 33px; border-radius: 8px; }
+
+.arch-node-body { display: flex; flex-direction: column; min-width: 0; }
+.arch-node-body strong { font-size: 14px; font-weight: 500; letter-spacing: -0.018em; color: var(--ink); }
+.arch-node-body span { font-size: 11.5px; color: var(--mut); line-height: 1.4; }
+
+.arch-link { display: flex; flex-direction: column; align-items: center; gap: 2px; padding-block: 7px; color: var(--rule-2); }
+
+.arch-link-line { position: relative; width: 1.5px; height: 24px; background: var(--rule-2); overflow: hidden; border-radius: 2px; }
+
+.arch-pulse {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 11px;
+  border-radius: 2px;
+  background: var(--orange);
+  animation: archFlow 2.4s linear infinite;
+}
+
+@keyframes archFlow { from { transform: translateY(-13px); } to { transform: translateY(26px); } }
+
+.arch-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  margin-top: 30px;
+  font-size: 9.5px;
+  letter-spacing: 0.11em;
+  color: var(--faint);
+  text-align: center;
+  line-height: 1.6;
+}
+
+.arch-note .ico { color: var(--orange); flex: none; }

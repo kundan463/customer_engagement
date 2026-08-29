@@ -1,0 +1,173 @@
+/* =====================================================
+   ENGAGE — a Telenow product
+   Ported from the client's engage-mobile-first.html:
+   white ground, #0A0A0A ink, #F97316 orange, Inter 800
+   display, WhatsApp-native colours, mobile-first.
+   ===================================================== */
+
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html { scroll-behavior: smooth; }
+
+:root {
+  --white: #FFFFFF;
+  --ink: #0A0A0A;
+  --ink-muted: #525252;
+  --ink-soft: #737373;
+  --rule: #E5E5E5;
+  --rule-soft: #F5F5F5;
+  --paper: #FAFAFA;
+
+  --orange: #F97316;
+  --orange-hover: #EA580C;
+  --orange-soft: #FFEDD5;
+  --orange-tint: #FFF7ED;
+  /* Text-safe orange. #F97316 is 3.0:1 on white — fine for large display and
+     fills, but not for labels, so small orange text uses this instead. */
+  --orange-text: #C2410C;
+
+  --wa-green: #25D366;
+  --wa-green-dark: #128C7E;
+  --wa-bubble: #DCF8C6;
+  --wa-chat-bg: #ECE5DD;
+
+  --pad: 16px;
+  --max-content: 1200px;
+}
+
+@media (min-width: 800px) {
+  :root { --pad: 32px; }
+  body { padding-bottom: 0; }
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--white);
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+  padding-bottom: 76px; /* room for the sticky mobile CTA */
+}
+button { font-family: inherit; border: none; background: none; cursor: pointer; }
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+ul { list-style: none; }
+.hindi { font-family: 'Hind', sans-serif; }
+
+/* =====================================================
+   Buttons
+   ===================================================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px 22px;
+  border-radius: 100px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  min-height: 46px;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+@media (min-width: 800px) {
+  .btn { padding: 14px 28px; font-size: 14px; min-height: 48px; }
+}
+.btn:active { transform: scale(0.97); }
+.btn::after { content: '›'; font-size: 18px; line-height: 1; margin-left: 4px; }
+.btn-noarrow::after { content: none; }
+
+.btn-primary { background: var(--orange); color: var(--white); border: 2px solid var(--orange); }
+.btn-primary:hover { background: var(--orange-hover); border-color: var(--orange-hover); }
+.btn-outline { background: transparent; color: var(--ink); border: 2px solid var(--orange); }
+.btn-outline:hover { background: var(--orange-soft); }
+.btn-nav { padding: 8px 16px; font-size: 12px; min-height: 38px; }
+@media (min-width: 800px) {
+  .btn-nav { padding: 10px 20px; font-size: 13px; min-height: 40px; }
+}
+.btn-wa { background: var(--wa-green); color: #fff; border: 2px solid var(--wa-green); }
+.btn-wa:hover { background: var(--wa-green-dark); border-color: var(--wa-green-dark); }
+
+/* =====================================================
+   Section framework
+   ===================================================== */
+.section {
+  padding: 56px var(--pad);
+  max-width: var(--max-content);
+  margin: 0 auto;
+}
+@media (min-width: 800px) { .section { padding: 80px var(--pad); } }
+
+.section-alt {
+  background: var(--paper);
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+.section-alt-wrap {
+  max-width: var(--max-content);
+  margin: 0 auto;
+  padding: 56px var(--pad);
+}
+@media (min-width: 800px) { .section-alt-wrap { padding: 80px var(--pad); } }
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--orange-text);
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+@media (min-width: 800px) { .eyebrow { font-size: 12px; margin-bottom: 20px; } }
+.eyebrow::before { content: ''; width: 20px; height: 2px; background: var(--orange); }
+
+h2.section-head {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(28px, 5vw, 48px);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  font-weight: 800;
+  color: var(--ink);
+  max-width: 20ch;
+}
+h2.section-head .accent { color: var(--orange); }
+
+.section-sub {
+  margin-top: 16px;
+  font-size: 15px;
+  color: var(--ink-muted);
+  line-height: 1.5;
+  max-width: 50ch;
+}
+@media (min-width: 800px) { .section-sub { font-size: 17px; margin-top: 20px; } }
+
+/* =====================================================
+   Scroll reveal
+   ===================================================== */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  .reveal { opacity: 1; transform: none; }
+  html { scroll-behavior: auto; }
+}
+
+a:focus-visible, button:focus-visible {
+  outline: 3px solid var(--orange);
+  outline-offset: 3px;
+  border-radius: 6px;
+}

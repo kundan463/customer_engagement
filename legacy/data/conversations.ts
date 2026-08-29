@@ -1,0 +1,178 @@
+import type { Conversation } from '../types'
+
+/**
+ * Five real-shaped Telenow conversations. Copy follows the pilot transcripts —
+ * bilingual, unpolished, and two-sided: she answers, then she asks back.
+ * `at` is the second of playback each turn lands on.
+ */
+export const CONVERSATIONS: Conversation[] = [
+  {
+    id: 'feedback',
+    tab: 'Feedback · WhatsApp',
+    agent: 'Telenow',
+    role: 'for Ember & Root',
+    initial: 'E',
+    channel: 'WhatsApp',
+    lang: 'Hindi',
+    callId: 'Priya · Delhi',
+    duration: 52,
+    score: '9.0',
+    summary:
+      'Priya understood the layering, saw brightening by day 12, and asked whether the tingling was normal — a question she had nowhere else to take. She rated 9 and said she would tell her sister. The brightening moisturizer was recommended off her own words and her ₹200 coupon went out in the same thread.',
+    meta: [
+      { k: 'Brand', v: 'Ember & Root' },
+      { k: 'Product', v: 'Vitamin C serum' },
+      { k: 'Mode', v: 'WhatsApp text' },
+      { k: 'Her time', v: '90 sec' },
+    ],
+    outcomes: [
+      '20 questions answered in her own words',
+      '30+ datapoints — Hindi via IG, 28–35, pigmentation',
+      'Brightening moisturizer recommended in-conversation',
+      '₹200 coupon PRIYA200 delivered instantly',
+    ],
+    turns: [
+      { who: 'AI', at: 1, text: 'Priya, aapke serum ka experience kaisa raha? 2 minutes ka feedback do — ₹200 off next order 🎁', sentiment: { pos: 18, neu: 78, neg: 4 } },
+      { who: 'CX', at: 9, text: 'Haan theek hai, ab tak accha lag raha hai.', sentiment: { pos: 62, neu: 34, neg: 4 }, intent: 'Positive experience' },
+      { who: 'AI', at: 16, text: 'Kya aapko product ka use samajh aa gaya? Layering wagairah?' },
+      { who: 'CX', at: 23, text: 'Haan samajh gaya. Par tingling ho raha hai, kya normal hai?', sentiment: { pos: 40, neu: 44, neg: 16 }, intent: 'Product question' },
+      { who: 'AI', at: 31, text: 'Bilkul normal hai — vitamin C skin barrier पे काम कर रहा है. Try it every other day this week.', intent: 'Answered · no escalation' },
+      { who: 'CX', at: 39, text: 'Achha! Brightening bhi thoda dikh raha hai. Sister ko bataungi.', sentiment: { pos: 88, neu: 10, neg: 2 }, intent: 'NPS 9 · will refer' },
+      { who: 'AI', at: 46, text: 'And your brightening moisturizer would pair beautifully with this. Your reward: ₹200 off — PRIYA200 🎁', intent: 'Cross-sell · coupon sent' },
+    ],
+  },
+  {
+    id: 'voice',
+    tab: 'Voice note · Tamil',
+    agent: 'Telenow',
+    role: 'for a nutra brand',
+    initial: 'E',
+    channel: 'Voice note',
+    lang: 'Tamil',
+    callId: 'Day 15 · Chennai',
+    duration: 47,
+    score: '6.8',
+    summary:
+      'A 47-second Tamil voice-note from a live pilot. She is unsure the supplement is working, but reports feeling less tired — the kind of half-formed, genuinely useful signal that never survives a star rating. She would never have filled a survey or replied to an email. She engaged because it was easy, and because she needed an answer she could not get anywhere else.',
+    meta: [
+      { k: 'Category', v: 'Nutra' },
+      { k: 'Day', v: '15 of 90' },
+      { k: 'Mode', v: 'Voice-note, 47s' },
+      { k: 'Language', v: 'Tamil' },
+    ],
+    outcomes: [
+      'Retention risk flagged at day 15, not at churn',
+      'Expectation reset — hair fall improves after week 8',
+      '90-day pack recommended over monthly reorder',
+      'Adverse-event check cleared — no escalation needed',
+    ],
+    turns: [
+      { who: 'AI', at: 1, text: 'Two weeks aachu — supplement eppadi irukku? Voice note anuppunga, English or Tamil.', sentiment: { pos: 14, neu: 80, neg: 6 } },
+      { who: 'CX', at: 11, text: 'Auntie, I don’t know if this is working. My hair still falls when I comb.', sentiment: { pos: 8, neu: 34, neg: 58 }, intent: 'Doubt · churn risk' },
+      { who: 'CX', at: 22, text: 'But I feel less tired in the mornings. Should I keep taking it?', sentiment: { pos: 34, neu: 52, neg: 14 }, intent: 'Asking for guidance' },
+      { who: 'AI', at: 31, text: 'Energy first, hair later — that is the normal order. Hair fall usually changes after week 8, so you are on track.', intent: 'Expectation reset' },
+      { who: 'AI', at: 40, text: 'Ungalukku 90-day pack better — cheaper per day, and it covers the full cycle. Coupon anuppuren.', sentiment: { pos: 66, neu: 30, neg: 4 }, intent: 'Reorder · 90-day pack' },
+    ],
+  },
+  {
+    id: 'crosssell',
+    tab: 'Recommend · Voice call',
+    agent: 'Telenow',
+    role: 'for Ember & Root',
+    initial: 'E',
+    channel: 'Voice call',
+    lang: 'Hindi',
+    callId: 'Meera · Pune',
+    duration: 58,
+    score: '8.6',
+    summary:
+      'She chose a call over typing. The routine she described — serum in the morning, nothing after — pointed straight at the gap. The recommendation came out of her own answer rather than a segment, and she bought it on the call with her ₹200 applied.',
+    meta: [
+      { k: 'Brand', v: 'Ember & Root' },
+      { k: 'Mode', v: 'Live voice call' },
+      { k: 'Picked', v: 'Call over chat' },
+      { k: 'Her time', v: '58 sec' },
+    ],
+    outcomes: [
+      'Cross-sell accepted on the call — ₹1,420',
+      'Routine gap captured as a datapoint',
+      'Coupon applied at checkout, not left unused',
+      'Cost of the conversation: ₹20',
+    ],
+    turns: [
+      { who: 'AI', at: 1, text: 'Meera ji, ek minute? Aapke serum ke baare mein do sawaal hain.', sentiment: { pos: 16, neu: 79, neg: 5 } },
+      { who: 'CX', at: 8, text: 'Haan bolo, main free hoon.', sentiment: { pos: 52, neu: 45, neg: 3 } },
+      { who: 'AI', at: 14, text: 'Routine kya hai abhi — subah serum, uske baad kuch lagati hain?' },
+      { who: 'CX', at: 22, text: 'Bas serum. Uske baad kuch nahi. Thoda dry lagta hai din mein.', sentiment: { pos: 30, neu: 52, neg: 18 }, intent: 'Routine gap · dryness' },
+      { who: 'AI', at: 32, text: 'Wahi issue hai — serum ko seal karna padta hai. Brightening moisturizer usi routine mein fit ho jayega.', intent: 'Recommendation · contextual' },
+      { who: 'CX', at: 43, text: 'Kitne ka hai?', sentiment: { pos: 48, neu: 49, neg: 3 }, intent: 'Price check' },
+      { who: 'AI', at: 49, text: 'Aapke ₹200 coupon ke baad ₹1,220. Abhi apply kar doon?', intent: 'Cross-sell accepted' },
+    ],
+  },
+  {
+    id: 'escalation',
+    tab: 'Adverse event · Escalated',
+    agent: 'Telenow',
+    role: 'for Ember & Root',
+    initial: 'E',
+    channel: 'WhatsApp',
+    lang: 'Hindi',
+    callId: 'Anjali · Jaipur',
+    duration: 44,
+    score: '4.2',
+    summary:
+      'A reaction, not a complaint about delivery. The AI stopped the campaign flow immediately — no questions, no recommendation, no coupon — and routed her to the brand’s CX team within 30 seconds with the full transcript. This is the 5% that should never be handled autonomously.',
+    meta: [
+      { k: 'Type', v: 'Adverse event' },
+      { k: 'Action', v: 'Halted + escalated' },
+      { k: 'To human', v: 'Under 30 sec' },
+      { k: 'Upsell', v: 'Suppressed' },
+    ],
+    outcomes: [
+      'Campaign flow halted — no recommendation attempted',
+      'Routed to the brand’s CX team in under 30 seconds',
+      'Full transcript handed over, she repeats nothing',
+      'Batch flagged for the brand’s quality check',
+    ],
+    turns: [
+      { who: 'AI', at: 1, text: 'Anjali, serum ka experience kaisa raha ab tak?', sentiment: { pos: 16, neu: 78, neg: 6 } },
+      { who: 'CX', at: 9, text: 'Bahut jalan ho rahi hai. Face pe red patches aa gaye hain.', sentiment: { pos: 2, neu: 16, neg: 82 }, intent: 'Adverse reaction' },
+      { who: 'AI', at: 18, text: 'Ye theek nahi hai — abhi use band kar dijiye. Main aapko turant hamari team se connect kar rahi hoon.', intent: 'Escalate · human' },
+      { who: 'AI', at: 28, text: 'No more questions and no offer here. Someone from Ember & Root is picking this up now.', intent: 'Flow halted' },
+      { who: 'CX', at: 37, text: 'Theek hai, thank you.', sentiment: { pos: 30, neu: 56, neg: 14 }, intent: 'Handed to human' },
+    ],
+  },
+  {
+    id: 'reorder',
+    tab: 'Reorder · WhatsApp',
+    agent: 'Telenow',
+    role: 'for a wellness brand',
+    initial: 'E',
+    channel: 'WhatsApp',
+    lang: 'Hinglish',
+    callId: 'Kabir · Bengaluru',
+    duration: 41,
+    score: '8.1',
+    summary:
+      'Ran out three weeks ago and never got round to reordering. The reason was worth as much as the order — he had switched to a marketplace out of habit, not preference. Reordered direct with his coupon and opted into a reminder before the next pack runs out.',
+    meta: [
+      { k: 'Status', v: 'Lapsed 21 days' },
+      { k: 'Mode', v: 'WhatsApp text' },
+      { k: 'Reason', v: 'Captured' },
+      { k: 'Her time', v: '41 sec' },
+    ],
+    outcomes: [
+      'Reordered direct instead of via a marketplace',
+      'Lapse reason captured — habit, not dissatisfaction',
+      'Refill reminder scheduled before the pack runs out',
+      'Customer now reachable directly by the brand',
+    ],
+    turns: [
+      { who: 'AI', at: 1, text: 'Kabir, aapka pack teen hafte pehle khatam ho gaya hoga. Sab theek?', sentiment: { pos: 18, neu: 76, neg: 6 } },
+      { who: 'CX', at: 9, text: 'Haan bas order karna hi bhool gaya. Amazon se le liya tha last time.', sentiment: { pos: 36, neu: 58, neg: 6 }, intent: 'Lapse reason · habit' },
+      { who: 'AI', at: 19, text: 'Samajh gaya. Direct order karne pe aapko ₹200 off milega — aur main next time yaad dila dungi.' },
+      { who: 'CX', at: 29, text: 'Achha, wo helpful hoga. Bhej do link.', sentiment: { pos: 80, neu: 18, neg: 2 }, intent: 'Reorder direct' },
+      { who: 'AI', at: 36, text: 'Bhej diya. Refill reminder bhi laga diya — 75 din baad.', intent: 'Reminder set' },
+    ],
+  },
+]
