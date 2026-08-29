@@ -3,9 +3,19 @@ import { CALLS } from '../data/calls'
 import { usePrefersReducedMotion, useReveal } from '../hooks'
 import { CallButton } from './LiveAgent'
 import { Icon } from './Icon'
+import { VoiceToggle } from './VoiceToggle'
+import { primeVoice, speak, stopVoice, useVoiceOn } from '../voice'
 
-/** Demo speed. A 48-second call replays in about 22 seconds. */
+/**
+ * Demo speed. Silent, a 48-second call replays in about 22 seconds.
+ *
+ * With sound on it drops to real time, because the voice cannot be
+ * compressed with it: each turn cancels the one before, so a transcript
+ * running at 2.2x would cut every line off mid-sentence. The clips are cut
+ * to the real gaps in `calls.ts`, so at 1x each one has exactly its slot.
+ */
 const SPEED = 2.2
+const SPEED_VOICED = 1
 const BARS = 64
 
 const clock = (s: number) =>
@@ -24,8 +34,11 @@ export function LiveCall() {
   const [playing, setPlaying] = useState(false)
   const [started, setStarted] = useState(false)
   const reduced = usePrefersReducedMotion()
+  const voiceOn = useVoiceOn()
   const { ref, className } = useReveal<HTMLDivElement>()
   const bodyRef = useRef<HTMLDivElement>(null)
+  /** The last turn spoken, so a re-render never says the same line twice. */
+  const said = useRef(-1)
 
   const call = CALLS[tab]
   const bars = useMemo(() => waveform(tab * 3 + 1), [tab])
@@ -36,6 +49,8 @@ export function LiveCall() {
   // tab isn't painting: that would leave the player reading "On call" while
   // nothing actually advanced. The delta is measured against the wall clock and
   // clamped, so a backgrounded tab resumes where it paused instead of jumping.
+  const speed = voiceOn ? SPEED_VOICED : SPEED
+
   useEffect(() => {
     if (!playing) return
     let prev = performance.now()
@@ -44,15 +59,17 @@ export function LiveCall() {
       const dt = Math.min((now - prev) / 1000, 0.5)
       prev = now
       setT((v) => {
-        const next = v + dt * SPEED
+        const next = v + dt * speed
         if (next >= end) { setPlaying(false); return end }
         return next
       })
     }, 60)
     return () => window.clearInterval(id)
-  }, [playing, end])
+  }, [playing, end, speed])
 
   const select = useCallback((n: number) => {
+    stopVoice()
+    said.current = -1
     setTab(n)
     setT(0)
     setStarted(false)
@@ -60,12 +77,22 @@ export function LiveCall() {
   }, [])
 
   const toggle = () => {
-    if (t >= end) setT(0)
+    // Inside the click, while the gesture still counts.
+    primeVoice()
+    if (t >= end) { setT(0); said.current = -1 }
+    if (playing) stopVoice()
     setStarted(true)
     setPlaying((v) => !v)
   }
 
-  const restart = () => { setT(0); setStarted(true); setPlaying(true) }
+  const restart = () => {
+    primeVoice()
+    stopVoice()
+    said.current = -1
+    setT(0)
+    setStarted(true)
+    setPlaying(true)
+  }
 
   const visible = call.turns.filter((x) => x.at <= t)
   const nextTurn = call.turns[visible.length]
@@ -80,6 +107,31 @@ export function LiveCall() {
     const el = bodyRef.current
     if (el) el.scrollTop = el.scrollHeight
   }, [visible.length])
+
+  /**
+   * Say the line that just landed. Keyed on how many turns are showing, so
+   * scrubbing backwards and forwards re-speaks correctly and a re-render on
+   * its own never repeats a line.
+   */
+  useEffect(() => {
+    if (!voiceOn || !playing || !visible.length) return
+    const n = visible.length - 1
+    if (n === said.current) return
+    said.current = n
+    const turn = visible[n]
+    speak(
+      `call:${call.callId}:${n}`,
+      turn.text,
+      turn.who === 'CX' ? 'customer' : 'agent',
+      call.lang.toLowerCase().includes('hindi') || call.lang.toLowerCase().includes('hinglish')
+        ? 'hi-IN'
+        : 'en-IN',
+    )
+  }, [visible.length, voiceOn, playing, call.callId, call.lang])
+
+  /* Leaving the section, or the page, should not leave a voice running. */
+  useEffect(() => () => stopVoice(), [])
+  useEffect(() => { if (!playing) stopVoice() }, [playing])
 
   const revealed = (n: number) => started && (done || visible.length > call.turns.length - 3 + n)
 
@@ -157,9 +209,14 @@ export function LiveCall() {
                     )
                   })}
                 </button>
-                <p className="lc-wave-note mono">
-                  TRANSCRIPT PLAYBACK · AUDIO PLAYS IN THE LIVE DEMO
-                </p>
+                <div className="lc-wave-foot">
+                  <p className="lc-wave-note mono">
+                    {voiceOn
+                      ? 'REAL-TIME PLAYBACK · TELENOW VOICES'
+                      : 'TRANSCRIPT PLAYBACK · 2.2×'}
+                  </p>
+                  <VoiceToggle />
+                </div>
               </div>
 
               <div className="lc-controls">

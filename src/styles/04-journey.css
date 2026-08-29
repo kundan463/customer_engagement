@@ -448,7 +448,16 @@
 
 @keyframes waveJig { from { transform: scaleY(0.62); } to { transform: scaleY(1.08); } }
 
-.lc-wave-note { margin-top: 8px; font-size: 9.5px; letter-spacing: 0.11em; color: var(--faint); text-align: center; }
+.lc-wave-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.lc-wave-note { font-size: 9.5px; letter-spacing: 0.11em; color: var(--faint); }
 
 .lc-controls { display: flex; align-items: center; gap: 11px; padding: 8px 16px 14px; border-bottom: 1px solid var(--rule); }
 

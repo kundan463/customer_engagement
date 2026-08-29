@@ -10,6 +10,15 @@ import type { Conversation } from '../types'
 
    The outcome codes are the real ones a post-purchase agent records:
    exactly one per call, most-serious-first.
+
+   The Hinglish call is written the way Hinglish is actually written: Hindi in
+   Devanagari, English words in Latin. One rule learned the hard way — an
+   English word that has been absorbed into Hindi grammar goes in Devanagari
+   too, and so does a proper noun: "Maya" inside an English clause opening a
+   Hindi sentence went missing in synthesis, so the greeting is plain Hindi
+   and the names are Devanagari. "use कर रहे हैं" lost the "use" in synthesis; "यूज कर रहे हैं" does
+   not, and comes back 10% longer for it. Latin is for words that are still
+   English (order, shampoo, hair mask, email), not for ones doing Hindi work.
    ===================================================================== */
 
 export const CALLS: Conversation[] = [
@@ -48,16 +57,18 @@ export const CALLS: Conversation[] = [
       { who: 'AI', at: 27, text: 'Noted — the dropper felt stiff, I will flag that. A lot of people who like that serum use the overnight mask with it. Want me to tell you a bit more?' },
       { who: 'CX', at: 36, text: 'Sure, go on.', sentiment: { pos: 66, neu: 31, neg: 3 }, intent: 'RECOMMENDATION_INTEREST' },
       { who: 'AI', at: 40, text: 'Since you are on the call, I can arrange twenty percent off it for the next seven days. Shall I send it on WhatsApp?' },
-      { who: 'CX', at: 45, text: 'Yes, please.', sentiment: { pos: 74, neu: 24, neg: 2 }, intent: 'OFFER_ACCEPTED' },
+      /* 46, not 45: the offer line before it needs the extra second to finish
+         speaking, and this one is short enough to give it up. */
+      { who: 'CX', at: 46, text: 'Yes, please.', sentiment: { pos: 74, neu: 24, neg: 2 }, intent: 'OFFER_ACCEPTED' },
       { who: 'AI', at: 48, text: 'Done — it will reach you in a few minutes. Thanks so much, Ananya, your feedback is logged. Take care.' },
     ],
   },
   {
     id: 'upsell',
     tab: 'Upsell call',
-    agent: 'Maya',
+    agent: 'Priya',
     role: 'Recommendation Agent',
-    initial: 'M',
+    initial: 'P',
     channel: 'Outbound voice',
     lang: 'Hinglish',
     callId: 'CX-9014',
@@ -80,15 +91,15 @@ export const CALLS: Conversation[] = [
       'Cart pre-filled on the storefront',
     ],
     turns: [
-      { who: 'AI', at: 0, text: 'Hi Rohit, Maya here. Aapka teesra order tha is mahine — bas yeh poochna tha, shampoo kaisa chal raha hai?', sentiment: { pos: 40, neu: 56, neg: 4 }, intent: 'GREETING' },
-      { who: 'CX', at: 7, text: 'Bahut accha hai. Ghar pe sab use kar rahe hain ab.', sentiment: { pos: 79, neu: 19, neg: 2 }, intent: 'STRONG_POSITIVE' },
-      { who: 'AI', at: 13, text: 'Sun kar accha laga. Ek se paanch mein rate karein toh?' },
-      { who: 'CX', at: 18, text: 'Paanch. Koi complaint nahi.', sentiment: { pos: 88, neu: 11, neg: 1 }, intent: 'RATING_5' },
-      { who: 'AI', at: 22, text: 'Jo log yeh shampoo lete hain, kaafi log hafte mein ek baar hair mask bhi use karte hain. Batau uske baare mein?' },
-      { who: 'CX', at: 30, text: 'Haan batao. Price kya hai uska?', sentiment: { pos: 71, neu: 27, neg: 2 }, intent: 'PRICE_ENQUIRY' },
-      { who: 'AI', at: 35, text: 'Chaar sau ninety nine rupaye. Aap call pe hain toh bees percent off kara deta hoon, saat din ke liye. Email pe bhejun?' },
-      { who: 'CX', at: 41, text: 'Haan, email theek hai.', sentiment: { pos: 76, neu: 22, neg: 2 }, intent: 'OFFER_ACCEPTED' },
-      { who: 'AI', at: 44, text: 'Bhej diya samajhiye. Thank you Rohit, aapka feedback note kar liya hai.' },
+      { who: 'AI', at: 0, text: 'नमस्ते रोहित, प्रिया बोल रही हूँ। आपका तीसरा order था इस महीने — बस यह पूछना था, shampoo कैसा चल रहा है?', sentiment: { pos: 40, neu: 56, neg: 4 }, intent: 'GREETING' },
+      { who: 'CX', at: 7, text: 'बहुत अच्छा है। घर पे सब यूज कर रहे हैं अब।', sentiment: { pos: 79, neu: 19, neg: 2 }, intent: 'STRONG_POSITIVE' },
+      { who: 'AI', at: 13, text: 'सुन कर अच्छा लगा। एक से पाँच में rate करें तो?' },
+      { who: 'CX', at: 18, text: 'पाँच। कोई complaint नहीं।', sentiment: { pos: 88, neu: 11, neg: 1 }, intent: 'RATING_5' },
+      { who: 'AI', at: 22, text: 'जो लोग यह shampoo लेते हैं, काफ़ी लोग हफ़्ते में एक बार hair mask भी यूज करते हैं। बताऊँ उसके बारे में?' },
+      { who: 'CX', at: 30, text: 'हाँ बताओ। Price क्या है उसका?', sentiment: { pos: 71, neu: 27, neg: 2 }, intent: 'PRICE_ENQUIRY' },
+      { who: 'AI', at: 35, text: 'चार सौ निन्यानवे रुपये। आप call पे हैं तो बीस percent off करा देता हूँ, सात दिन के लिए। Email पे भेजूँ?' },
+      { who: 'CX', at: 41, text: 'हाँ, email ठीक है।', sentiment: { pos: 76, neu: 22, neg: 2 }, intent: 'OFFER_ACCEPTED' },
+      { who: 'AI', at: 44, text: 'भेज दिया समझिए। धन्यवाद रोहित, आपका feedback note कर लिया है।' },
     ],
   },
   {
@@ -133,9 +144,9 @@ export const CALLS: Conversation[] = [
   {
     id: 'survey',
     tab: 'Survey call',
-    agent: 'Arjun',
+    agent: 'Maya',
     role: 'Survey Agent',
-    initial: 'A',
+    initial: 'M',
     channel: 'Outbound voice',
     lang: 'English',
     callId: 'CX-9302',
@@ -158,8 +169,10 @@ export const CALLS: Conversation[] = [
       'Cohort NPS recalculated live',
     ],
     turns: [
-      { who: 'AI', at: 0, text: 'Hi Meera, this is Arjun — two quick questions about your last few orders, about a minute in total. Is that alright?', sentiment: { pos: 32, neu: 62, neg: 6 }, intent: 'CONSENT' },
-      { who: 'CX', at: 7, text: 'Sure, go ahead.', sentiment: { pos: 55, neu: 43, neg: 2 } },
+      { who: 'AI', at: 0, text: 'Hi Meera, this is Maya — two quick questions about your last few orders, about a minute in total. Is that alright?', sentiment: { pos: 32, neu: 62, neg: 6 }, intent: 'CONSENT' },
+      /* 8, not 7: Maya's opening line needs the extra second to finish at
+         natural pace, and this one is short enough to lend it. */
+      { who: 'CX', at: 8, text: 'Sure, go ahead.', sentiment: { pos: 55, neu: 43, neg: 2 } },
       { who: 'AI', at: 11, text: 'On a scale of nought to ten, how likely are you to recommend us to a friend?' },
       { who: 'CX', at: 18, text: 'Nine, I would say.', sentiment: { pos: 74, neu: 24, neg: 2 }, intent: 'NPS_PROMOTER' },
       { who: 'AI', at: 22, text: 'Thank you. What is the main reason for that nine?' },

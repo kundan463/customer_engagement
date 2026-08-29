@@ -3,3 +3,8 @@ dist
 dist-artifact
 *.local
 .DS_Store
+
+# secrets — never commit
+.env
+.env.local
+.env.*.local

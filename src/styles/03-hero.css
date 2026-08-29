@@ -58,9 +58,9 @@
 
 .hero-h1 {
   font-family: var(--display);
-  font-size: clamp(40px, 5.1vw, 62px);
+  font-size: clamp(42px, 5.6vw, 68px);
   font-weight: 500;
-  line-height: 1.04;
+  line-height: 1.02;
   letter-spacing: -0.021em;
   color: var(--ink);
   text-wrap: balance;
@@ -255,7 +255,11 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  height: 380px;
+  /* The one number that sets the handset's proportions: everything above it
+     is fixed chrome. 545 puts a 340-wide phone at ~1:2.06, against a real
+     one's 1:2.17 — it reads as a phone rather than a squat rectangle. The
+     vh term is a floor for short laptops, not the driver. */
+  height: clamp(420px, 60vh, 545px);
   padding: 16px 13px;
   overflow-y: auto;
   scrollbar-width: thin;
@@ -263,6 +267,12 @@
   background-image: radial-gradient(rgba(19, 35, 63, 0.05) 1px, transparent 1px);
   background-size: 16px 16px;
 }
+
+/* Messages stack up from the bottom, the way every chat app does. Without
+   this a longer screen leaves the first two messages stranded at the top of
+   an empty pane. `margin-top: auto` on the first child rather than
+   `justify-content: flex-end`, which clips the top of an overflowing thread. */
+.hv-thread > :first-child { margin-top: auto; }
 
 .hv-thread::-webkit-scrollbar { width: 4px; }
 .hv-thread::-webkit-scrollbar-thumb { background: rgba(19, 35, 63, 0.2); border-radius: 4px; }
@@ -454,7 +464,7 @@
 }
 
 @media (min-width: 820px) {
-  .hv { display: block; min-height: 680px; }
+  .hv { display: block; min-height: 860px; }
   .hv-phone { width: min(340px, 100%); margin: 30px auto 0; }
   .hv-rail { margin: 26px auto 0; width: fit-content; }
 
@@ -467,9 +477,9 @@
      text ever hides behind one. */
   .hv-thread { padding-inline: 48px; }
 
-  .hv-out { top: 192px; right: 0; }
-  .hv-now { top: 250px; left: 0; }
-  .hv-live { top: 404px; left: 0; }
+  .hv-out { top: 198px; right: 0; }
+  .hv-now { top: 268px; left: 0; }
+  .hv-live { top: 516px; left: 0; }
 }
 
 /* card · where we are */

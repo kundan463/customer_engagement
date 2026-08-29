@@ -4,7 +4,8 @@ Marketing site for **Telenow**, the AI customer engagement platform that automat
 post-purchase conversations across voice, WhatsApp, SMS and email.
 React 19 + Vite 6 + TypeScript.
 
-Headline: **Built For D2C. Powered By Voice.**
+Headline: **Built For D2C. Powered By Voice AI.** — three lines, the last
+set in italic orange under a brand rule.
 
 ## Run it
 
@@ -51,7 +52,10 @@ Display type is **Georgia** — `Georgia, 'Iowan Old Style', 'Times New Roman',
 ui-serif, serif`, the exact stack telenow.ai uses, at weight 500 with -0.02em
 tracking. It is the single most recognisable Telenow trait and the thing that
 separates this page from every other white SaaS template. **Inter** carries all
-UI and body text; **Hind** covers the Devanagari in the Hinglish call script.
+UI and body text. **Hind** sits *behind* Inter in the stack rather than beside
+it: Inter has no Devanagari, so the browser falls through to Hind for exactly
+those glyphs and leaves the Latin alone. That is what lets the Hinglish call
+mix scripts inside one sentence without tagging spans.
 
 The rule is *serif for display, sans for chrome*: section headings, the hero,
 step titles, the agent name and every stat figure are serif; card titles, labels,
@@ -121,13 +125,17 @@ analytics dashboard and ROI calculator that were cut. Both sit outside
   7s a step, each step swapping a realistic mock of the screen you would be on.
   The only section built on **Framer Motion**; see below.
 - **Hero phone** — ten lifecycle stages, auto-advancing every 4.2s, pausable.
+  Proportioned like a real handset (1:2.05 against an iPhone's 1:2.17); the
+  thread height is the only number that sets that, since everything above it
+  is fixed chrome. Messages stack from the bottom the way a chat app does.
   The thread *accumulates* as it advances (2 messages at stage 1, 20 at stage 10)
   with three cards floating at the phone's edges that swap per stage.
 - **Journey stepper** — the same ten beats opened up: visual card, example
   conversation, business outcome. Arrow keys work.
 - **Call simulator** — five call types (feedback, upsell, support, survey,
   reorder) playing at 2.2×, with a scrubbable waveform, live sentiment, detected
-  intent, and the post-call analysis fields filling in as the call closes.
+  intent, and the post-call analysis fields filling in as the call closes. Turn
+  **Sound on** and it reads the transcript aloud; see below.
 - **Demo generator** — builds a personalised workflow diagram client-side.
   Primary use case includes **Other**, which reveals a free-text field and titles
   the generated workflow with whatever they type (falling back to the label if
@@ -193,6 +201,177 @@ tab; `requestAnimationFrame` — which drives Framer — does not. Left ungated,
 a backgrounded tab advances the act every few seconds while no enter or exit
 animation can complete, and the panels pile up in the DOM. I watched five
 stack up before adding the gate.
+
+### The demo voice
+
+The call simulator speaks its transcript in **Telenow's own voices**. All 41
+lines are pre-rendered by `tts.telenow.ai` (`telenow-voice-indic-v2`) and
+served as static MP3s — 1.3 MB for the five calls. **Nothing is synthesised at
+runtime**: the page loads finished audio, so a model still in training cannot
+produce a surprise on a visitor's screen.
+
+```bash
+npm run audio            # generate what is missing
+node scripts/tts-generate.mjs --force
+node scripts/tts-generate.mjs --only feedback,upsell
+```
+
+**The key never reaches the browser.** It lives in `.env.local` (gitignored)
+and is read only by `scripts/tts-generate.mjs`, which runs on a machine.
+Nothing under `src/` touches it — anything there is bundled and shipped, so a
+key in that tree is a key published to every visitor. The page only ever
+loads finished audio.
+
+The script writes `src/data/clips.ts`, the manifest `voice.ts` imports, so
+regenerating audio keeps the two in step without anyone hand-editing 41 paths.
+Any line without a clip falls back to the browser's own voice, and a clip that
+404s falls back too — which is what keeps `build:artifact` working, since the
+single-file build inlines JS and CSS but cannot carry `public/`.
+
+**The cast, read out of the transcripts themselves** — not every customer is
+Ananya, and the Hinglish call is not Maya's:
+
+| Call | Agent | Customer | Voices (agent · customer) |
+| --- | --- | --- | --- |
+| feedback | Maya | Ananya | `sarah-approachable-and-informative-en` · `lisa-women-en` |
+| support | Maya | unnamed | `sarah-approachable-and-informative-en` · `lisa-women-en` |
+| reorder | Maya | Kavya | `sarah-approachable-and-informative-en` · `lisa-women-en` |
+| survey | Maya | Meera | `sarah-approachable-and-informative-en` · `lisa-women-en` |
+| upsell (Hinglish) | **Priya** | **Rohit (m)** | `anu-sweet-warm-sdr-voice` · `sunny-young-expressive-excited-youthful` |
+
+Maya is `sarah-approachable-and-informative-en` and the women customers
+`lisa-women-en`, both chosen by the brand. Two exceptions, both deliberate:
+
+- **The Hinglish call keeps a Hindi-trained agent voice.** Its script is
+  Roman-script Hinglish — *"aapka teesra order tha is mahine"* — and an
+  English voice reads that with English phonics. `anu-sweet-warm-sdr-voice` is
+  a Hindi SDR voice, so Maya sounds different on that one call: correct
+  pronunciation bought at the cost of a consistent Maya.
+
+  `devi-smooth-polished-commercial-confident-persuasive-attention` was offered
+  alongside Anu and is unused. It reads as a commercial voice where this is a
+  post-purchase check-in, and there is no second Hindi part for it: the only
+  other Hindi speaker on the page is Rohit, who is a man.
+- **The Hinglish call has its own agent.** Its script is Devanagari, which an
+  English voice reads badly, so it needs a Hindi-trained voice. Rather than
+  have Maya sound like two different people across the tabs, that call is
+  Priya's — a different agent doing a different job in a different language.
+- **The survey has been through three casts**: Arjun on `hussen-men-hi`, then
+  Priya on `kunto-engaging-young-female-voice-en` — which did not deliver a
+  female read — and now Maya, since it carries her voice. A differently-named
+  agent using Maya's exact voice would be the same defect in reverse. Both
+  earlier voices are now unused.
+Every part is cast by the brand; nothing in `VOICES` is a stand-in.
+
+#### The Hinglish call is written in Devanagari
+
+The upsell call is scripted the way Indians actually write Hinglish — Hindi in
+Devanagari, English words in Latin, inside one sentence:
+
+> Hi Rohit, Maya here. आपका तीसरा order था इस महीने — बस यह पूछना था, shampoo
+> कैसा चल रहा है?
+
+It was Roman transliteration first (*"Aapka teesra order tha is mahine"*), which
+an Indic model reads as if it were English spelling. In native script it reads
+as Hindi, and the difference shows in the output: every line of that call now
+fits its slot at natural pace, where the transliterated versions had to be
+compressed to 1.06–1.10x to fit.
+
+One rule, learned by listening then confirmed by measuring: **an English word
+absorbed into Hindi grammar goes in Devanagari too.** `use कर रहे हैं` lost the
+"use" in synthesis — the model skipped an isolated Latin token doing Hindi verb
+work. `यूज कर रहे हैं` keeps it, and comes back **10% longer** for it. Latin
+stays for words still behaving as English (*order*, *shampoo*, *hair mask*,
+*email*); Devanagari takes the ones doing Hindi work.
+
+`rate करें` and `note कर लिया है` measured clean at ±1%, so they were left in
+Latin — but duration only proves a word is *present*, never that it is well
+pronounced. That still needs an ear.
+
+The same text serves the screen and the speech, so what a visitor reads is what
+they hear. Any future Hindi call should be written the same way.
+
+#### The model is still training — check the clips
+
+`npm run audio` also writes **`public/audio-review.html`**: every clip beside
+the line it is meant to say, with a player. Run `npm run dev` and open
+`/audio-review.html`.
+
+That page exists because **nothing in the pipeline can catch a hallucination.**
+The service's own word-miss detector compares *durations* — it flags dropped
+words, not wrong ones — and the only transcription the API exposes is a side
+effect of registering a voice, which would mean creating 41 junk voices in the
+production catalog to read them back. So the clips shipped here are
+**unverified by ear**. If one is wrong, drop your own recording at
+`public/audio/<name>.mp3` or delete it and re-run — the page needs no code
+change either way, because it loads whatever is at that path.
+
+The review sheet has to sit in `public/` for the dev server to serve it, so a
+small Vite plugin (`dropInternalPages`) removes it from `dist/` and the
+artifact. It is a tool, not a page.
+
+#### Render settings, chosen by A/B rather than by taste
+
+The `quality` presets stop at 48 diffusion steps (`standard`). `num_step` goes
+to **128**, and since nobody is waiting on an offline render, that is what we
+use. Two defaults also needed moving, both found by measuring:
+
+| Setting | Default | Here | Why |
+| --- | --- | --- | --- |
+| `num_step` | 48 (preset ceiling) | **128** | the API's real ceiling |
+| `position_temperature` | **5.0** | **1.0** | it randomises which mask positions get filled — this is how words go missing |
+| `guidance_scale` | 2.0 | **3.0** | tighter adherence to the voice reference (the accent) and to the text |
+
+Neither was guesswork. Taking `position_temperature` to **0** is *worse*, not
+better: fully deterministic came back **17% shorter** on a Hindi line, meaning
+it dropped content. And `guidance_scale` is load-bearing — at 2.5 the same line
+lost 10% of its length. At 128 / 3.0 / 1.0 the durations match the 48-step
+renders, so the extra fidelity costs no content.
+
+The render settings and each line's slot are both part of a clip's identity in
+`.render-state.json`. Leave them out and raising the step count re-renders
+nothing, and retiming a turn leaves stale audio behind — both of which happened
+before they were added.
+
+#### Sound changes the clock
+
+Silent, the player runs at **2.2×** — a 48-second call in about 22. With sound
+on it drops to **real time**, because speech cannot be compressed with it:
+each turn cancels the one before, so a transcript racing ahead would cut every
+line off mid-sentence. At 1× each clip has exactly the gap `calls.ts` gives it.
+
+The generator enforces that. It renders each line naturally, measures it, and
+re-cuts anything that overruns its slot at up to **1.35×** — past which it
+stops sounding like someone talking and starts sounding like someone in a
+hurry. Four lines needed it; the rest are natural.
+
+Getting that measurement right mattered. We ask for 24 kHz, which is **MPEG-2,
+and MPEG-2 carries 576 samples per frame with its own bitrate table**. Read
+with the MPEG-1 table, every clip reports half its true length — which is
+exactly what happened first time round: the script cheerfully declared all 41
+comfortably short while **27 of them were being cut off**.
+
+Two more things the browser makes you handle:
+
+- **Sound is on by default, and still cannot start on its own.** No path into
+  `speak()` runs without the play button, and that press is the gesture
+  browsers require — nothing here is ever triggered by scrolling.
+
+  Chrome grants sticky activation on any click, so a later programmatic
+  `play()` is fine. Safari and iOS want playback to *begin* in the gesture,
+  and every clip starts from a timer a second or two after the press — so
+  `primeVoice()` plays 0.05s of silence during the click itself, which buys
+  the rest of the session. It runs from play, restart and the mute toggle;
+  never from an effect.
+- **A cancelled clip is not a failed clip.** `stopVoice()` used to clear the
+  source with `src = ''`, which is an invalid source and fires an `error`
+  event — firing the synthesis fallback for the line just abandoned, so the
+  browser voice talked over the new clip. It now detaches with
+  `removeAttribute('src')` and both failure paths check the element is still
+  current before falling back.
+
+Nothing speaks while `visibilityState` is `hidden`, and everything stops on
+pause, restart, call-type switch and unmount.
 
 ### The call runs on this page, in our own UI
 

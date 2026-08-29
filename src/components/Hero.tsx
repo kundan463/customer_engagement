@@ -60,7 +60,7 @@ export function Hero() {
           </span>
 
           <h1 className="hero-h1">
-            Built For D2C.<br />Powered By <span className="hero-em">Voice</span>.
+            Built For D2C.<br />Powered By<br /><span className="hero-em">Voice AI</span>.
           </h1>
 
           <p className="hero-sub">

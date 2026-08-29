@@ -1,0 +1,238 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<title>Demo call audio — review</title>
+<style>
+  body { font: 15px/1.6 system-ui, sans-serif; margin: 0; padding: 32px; color: #13233F; background: #FBF8F3; }
+  h1 { font: 600 22px/1.2 system-ui; margin: 0 0 6px; }
+  p.lede { color: #55637C; max-width: 68ch; margin: 0 0 26px; }
+  table { border-collapse: collapse; width: 100%; background: #fff; border: 1px solid #E8E3DA; border-radius: 12px; overflow: hidden; }
+  th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid #F1EDE6; vertical-align: top; }
+  th { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #616D85; background: #FBF8F3; }
+  tr:last-child td { border-bottom: 0; }
+  .f { font-family: ui-monospace, monospace; font-size: 12px; color: #55637C; white-space: nowrap; }
+  .f em { color: #A8430C; font-style: normal; }
+  .t { max-width: 62ch; }
+  audio { height: 34px; }
+  code { background: #F5F1EA; padding: 1px 5px; border-radius: 4px; font-size: 13px; }
+</style>
+<h1>Demo call audio — review</h1>
+<p class="lede">
+  Listen to each clip against the line it is meant to say. The voice model is
+  still training and can say something other than the text it was given —
+  nothing automatic catches that, because the service compares durations, not
+  words. If a clip is wrong, replace the file at
+  <code>public/audio/&lt;name&gt;.mp3</code> with a recording of your own, or
+  delete it and re-run <code>npm run audio</code> to try again. The page needs
+  no code change either way: it loads whatever is at that path.
+</p>
+<table>
+  <thead><tr><th>File</th><th>Should say</th><th>Listen</th></tr></thead>
+  <tbody>
+    <tr>
+      <td class="f">CX-8841-00.mp3</td>
+      <td class="t">Hi Ananya, this is Maya calling about your recent order. Thank you for choosing us — how has your experience been so far?</td>
+      <td><audio controls preload="none" src="/audio/CX-8841-00.mp3"></audio></td>
+    </tr>
+    <tr>
+      <td class="f">CX-8841-01.mp3</td>
+      <td class="t">It has been great, actually. The serum absorbs really fast.</td>
+      <td><audio controls preload="none" src="/audio/CX-8841-01.mp3"></audio></td>
+    </tr>
+    <tr>
+      <td class="f">CX-8841-02.mp3</td>
+      <td class="t">That is wonderful to hear. Could you rate your experience from one to five?</td>
+      <td><audio controls preload="none" src="/audio/CX-8841-02.mp3"></audio></td>
+    </tr>
+    <tr>
+      <td class="f">CX-8841-03.mp3</td>
+      <td class="t">I would say a four. The dropper is a bit stiff, that is the only thing.</td>
+      <td><audio controls preload="none" src="/audio/CX-8841-03.mp3"></audio></td>
+    </tr>
+    <tr>
+      <td class="f">CX-8841-04.mp3</td>
+      <td class="t">Noted — the dropper felt stiff, I will flag that. A lot of people who like that serum use the overnight mask with it. Want me to tell you a bit more?</td>
+      <td><audio controls preload="none" src="/audio/CX-8841-04.mp3"></audio></td>
+    </tr>
+    <tr>
+      <td class="f">CX-8841-05.mp3</td>
+      <td class="t">Sure, go on.</td>
+      <td><audio controls preload="none" src="/audio/CX-8841-05.mp3"></audio></td>
+    </tr>
+    <tr>
+      <td class="f">CX-8841-06.mp3</td>
+      <td class="t">Since you are on the call, I can arrange twenty percent off it for the next seven days. Shall I send it on WhatsApp?</td>
+      <td><audio controls preload="none" src="/audio/CX-8841-06.mp3"></audio></td>
+    </tr>
+    <tr>
+      <td class="f">CX-8841-07.mp3</td>
+      <td class="t">Yes, please.</td>
+      <td><audio controls preload="none" src="/audio/CX-8841-07.mp3"></audio></td>
+    </tr>
+    <tr>
+      <td class="f">CX-8841-08.mp3</td>
+      <td class="t">Done — it will reach you in a few minutes. Thanks so much, Ananya, your feedback is logged. Take care.</td>
+      <td><audio controls preload="none" src="/audio/CX-8841-08.mp3"></audio></td>
+    </tr>
+    <tr>
+      <td class="f">CX-9014-00.mp3</td>
+      <td class="t">नमस्ते रोहित, प्रिया बोल रही हूँ। आपका तीसरा order था इस महीने — बस यह पूछना था, shampoo कैसा चल रहा है?</td>
+      <td><audio controls preload="none" src="/audio/CX-9014-00.mp3"></audio></td>
+    </tr>
+    <tr>
+      <td class="f">CX-9014-01.mp3</td>
+      <td class="t">बहुत अच्छा है। घर पे सब यूज कर रहे हैं अब।</td>
+      <td><audio controls preload="none" src="/audio/CX-9014-01.mp3"></audio></td>
+    </tr>
+    <tr>
+      <td class="f">CX-9014-02.mp3</td>
+      <td class="t">सुन कर अच्छा लगा। एक से पाँच में rate करें तो?</td>
+      <td><audio controls preload="none" src="/audio/CX-9014-02.mp3"></audio></td>
+    </tr>
+    <tr>
+      <td class="f">CX-9014-03.mp3</td>
+      <td class="t">पाँच। कोई complaint नहीं।</td>
+      <td><audio controls preload="none" src="/audio/CX-9014-03.mp3"></audio></td>
+    </tr>
+    <tr>
+      <td class="f">CX-9014-04.mp3</td>
+      <td class="t">जो लोग यह shampoo लेते हैं, काफ़ी लोग हफ़्ते में एक बार hair mask भी यूज करते हैं। बताऊँ उसके बारे में?</td>
+      <td><audio controls preload="none" src="/audio/CX-9014-04.mp3"></audio></td>
+    </tr>
+    <tr>
+      <td class="f">CX-9014-05.mp3</td>
+      <td class="t">हाँ बताओ। Price क्या है उसका?</td>
+      <td><audio controls preload="none" src="/audio/CX-9014-05.mp3"></audio></td>
+    </tr>
+    <tr>
+      <td class="f">CX-9014-06.mp3</td>
+      <td class="t">चार सौ निन्यानवे रुपये। आप call पे हैं तो बीस percent off करा देता हूँ, सात दिन के लिए। Email पे भेजूँ?</td>
+      <td><audio controls preload="none" src="/audio/CX-9014-06.mp3"></audio></td>
+    </tr>
+    <tr>
+      <td class="f">CX-9014-07.mp3</td>
+      <td class="t">हाँ, email ठीक है।</td>
+      <td><audio controls preload="none" src="/audio/CX-9014-07.mp3"></audio></td>
+    </tr>
+    <tr>
+      <td class="f">CX-9014-08.mp3</td>
+      <td class="t">भेज दिया समझिए। धन्यवाद रोहित, आपका feedback note कर लिया है।</td>
+      <td><audio controls preload="none" src="/audio/CX-9014-08.mp3"></audio></td>
+    </tr>
+    <tr>
+      <td class="f">CX-9188-00.mp3</td>
+      <td class="t">Thanks for calling. This is Maya — how can I help you today?</td>
+      <td><audio controls preload="none" src="/audio/CX-9188-00.mp3"></audio></td>
+    </tr>
+    <tr>
+      <td class="f">CX-9188-01.mp3</td>
+      <td class="t">I used the face wash you sent and my skin has been itching for two days.</td>
+      <td><audio controls preload="none" src="/audio/CX-9188-01.mp3"></audio></td>
+    </tr>
+    <tr>
+      <td class="f">CX-9188-02.mp3</td>
+      <td class="t">I am really sorry to hear that, and I understand how worrying that is. Please stop using it right away. Have you been able to speak to a doctor?</td>
+      <td><audio controls preload="none" src="/audio/CX-9188-02.mp3"></audio></td>
+    </tr>
+    <tr>
+      <td class="f">CX-9188-03.mp3</td>
+      <td class="t">Not yet. Is it an allergy or something?</td>
+      <td><audio controls preload="none" src="/audio/CX-9188-03.mp3"></audio></td>
+    </tr>
+    <tr>
+      <td class="f">CX-9188-04.mp3</td>
+      <td class="t">That is not something I should guess at, and I would not want to. Our care team will call you back today with the right person on the line. Would that be alright?</td>
+      <td><audio controls preload="none" src="/audio/CX-9188-04.mp3"></audio></td>
+    </tr>
+    <tr>
+      <td class="f">CX-9188-05.mp3</td>
+      <td class="t">Yes. After six in the evening works.</td>
+      <td><audio controls preload="none" src="/audio/CX-9188-05.mp3"></audio></td>
+    </tr>
+    <tr>
+      <td class="f">CX-9188-06.mp3</td>
+      <td class="t">Logged — today after six. I have recorded exactly what you described, and the batch number from your order is attached to it.</td>
+      <td><audio controls preload="none" src="/audio/CX-9188-06.mp3"></audio></td>
+    </tr>
+    <tr>
+      <td class="f">CX-9188-07.mp3</td>
+      <td class="t">Okay, thank you.</td>
+      <td><audio controls preload="none" src="/audio/CX-9188-07.mp3"></audio></td>
+    </tr>
+    <tr>
+      <td class="f">CX-9188-08.mp3</td>
+      <td class="t">Thank you for telling us. Please do see a doctor in the meantime. Take care.</td>
+      <td><audio controls preload="none" src="/audio/CX-9188-08.mp3"></audio></td>
+    </tr>
+    <tr>
+      <td class="f">CX-9302-00.mp3</td>
+      <td class="t">Hi Meera, this is Maya — two quick questions about your last few orders, about a minute in total. Is that alright?</td>
+      <td><audio controls preload="none" src="/audio/CX-9302-00.mp3"></audio></td>
+    </tr>
+    <tr>
+      <td class="f">CX-9302-01.mp3</td>
+      <td class="t">Sure, go ahead.</td>
+      <td><audio controls preload="none" src="/audio/CX-9302-01.mp3"></audio></td>
+    </tr>
+    <tr>
+      <td class="f">CX-9302-02.mp3</td>
+      <td class="t">On a scale of nought to ten, how likely are you to recommend us to a friend?</td>
+      <td><audio controls preload="none" src="/audio/CX-9302-02.mp3"></audio></td>
+    </tr>
+    <tr>
+      <td class="f">CX-9302-03.mp3</td>
+      <td class="t">Nine, I would say.</td>
+      <td><audio controls preload="none" src="/audio/CX-9302-03.mp3"></audio></td>
+    </tr>
+    <tr>
+      <td class="f">CX-9302-04.mp3</td>
+      <td class="t">Thank you. What is the main reason for that nine?</td>
+      <td><audio controls preload="none" src="/audio/CX-9302-04.mp3"></audio></td>
+    </tr>
+    <tr>
+      <td class="f">CX-9302-05.mp3</td>
+      <td class="t">Delivery is always fast, and nothing has ever arrived damaged.</td>
+      <td><audio controls preload="none" src="/audio/CX-9302-05.mp3"></audio></td>
+    </tr>
+    <tr>
+      <td class="f">CX-9302-06.mp3</td>
+      <td class="t">That is good to know — I have logged delivery speed as the reason. That is everything, Meera. Thank you for the minute.</td>
+      <td><audio controls preload="none" src="/audio/CX-9302-06.mp3"></audio></td>
+    </tr>
+    <tr>
+      <td class="f">CX-9455-00.mp3</td>
+      <td class="t">Hi Kavya, Maya here. It has been a while since your last hair oil order — I wanted to check whether everything was alright with it.</td>
+      <td><audio controls preload="none" src="/audio/CX-9455-00.mp3"></audio></td>
+    </tr>
+    <tr>
+      <td class="f">CX-9455-01.mp3</td>
+      <td class="t">Oh, no, it was fine. I just forgot to order again, honestly.</td>
+      <td><audio controls preload="none" src="/audio/CX-9455-01.mp3"></audio></td>
+    </tr>
+    <tr>
+      <td class="f">CX-9455-02.mp3</td>
+      <td class="t">That happens more than you would think. Would it help if I sent you a link to reorder the same one?</td>
+      <td><audio controls preload="none" src="/audio/CX-9455-02.mp3"></audio></td>
+    </tr>
+    <tr>
+      <td class="f">CX-9455-03.mp3</td>
+      <td class="t">Is there any offer on it right now?</td>
+      <td><audio controls preload="none" src="/audio/CX-9455-03.mp3"></audio></td>
+    </tr>
+    <tr>
+      <td class="f">CX-9455-04.mp3</td>
+      <td class="t">Not on that one today — I would rather tell you straight than invent one. The price is the same as last time.</td>
+      <td><audio controls preload="none" src="/audio/CX-9455-04.mp3"></audio></td>
+    </tr>
+    <tr>
+      <td class="f">CX-9455-05.mp3</td>
+      <td class="t">Fair enough. Send the link, I will do it tonight.</td>
+      <td><audio controls preload="none" src="/audio/CX-9455-05.mp3"></audio></td>
+    </tr>
+    <tr>
+      <td class="f">CX-9455-06.mp3</td>
+      <td class="t">Sending it on WhatsApp now. I will also set a quiet reminder for around eight weeks so it does not slip again. Thanks, Kavya.</td>
+      <td><audio controls preload="none" src="/audio/CX-9455-06.mp3"></audio></td>
+    </tr>
+  </tbody>
+</table>
