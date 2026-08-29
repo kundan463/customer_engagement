@@ -1,9 +1,15 @@
 /* =====================================================================
    TELENOW — Built For D2C. Powered By Voice.
 
-   Light, airy, GoKwik-flavoured: white ground with a warm bone alt band,
-   light-weight display type, pill buttons, hairline rules, small radii.
-   Colour stays Telenow — #F97316 orange on #0A0A0A ink.
+   The design system is Telenow's own, lifted from telenow.ai: a serif
+   display face over navy ink, #F26B1D orange, warm bone and peach tints,
+   pill chrome and a soft navy-tinted shadow scale.
+
+   The *structure* is GoKwik's business-site rhythm — alternating bands,
+   pill CTAs, a trust strip, hairline rules and light display type.
+
+   Serif display is the single most recognisable Telenow trait; it is what
+   separates this page from every other white SaaS template.
    ===================================================================== */
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -12,54 +18,73 @@
 :root {
   color-scheme: light;
 
+  /* ---- grounds ---- */
   --white: #FFFFFF;
-  --bone: #F5F4EE;      /* warm alternating band */
-  --paper: #FAFAF8;
-  --ink: #0A0A0A;       /* headings */
-  --body: #2F2F2F;      /* body copy */
-  --mut: #5C5C5C;       /* secondary — 6.5:1 on white */
-  --faint: #6E6E6E;     /* small labels — 4.6:1 on the bone band */
-  --rule: #E6E4DD;
-  --rule-2: #D6D3CA;
-  --navy: #0B1020;      /* inverted blocks */
+  --cream: #FBF8F3;     /* the softest ground — inset panels */
+  --bone: #F5F1EA;      /* warm alternating band */
+  --paper: #FAF8F4;
+  --peach: #FDECDD;     /* brand tint — highlight panels */
+  --peach-2: #FBDCC4;   /* brand tint, one step up */
+  --peach-3: #FDE3CC;   /* the hero wash */
+  --mist: #DFE7F5;      /* cool counterweight in the hero wash */
 
-  --orange: #F97316;
-  --orange-hover: #EA580C;
-  --orange-soft: #FFF1E6;
-  --orange-tint: #FFF8F2;
-  /* #F97316 is 3.0:1 on white — fine for fills and large display, not for
-     small labels. Those use this instead (5.9:1). */
-  --orange-text: #C2410C;
-  /* Large display text (>=24px) needs 3:1; #F97316 gives 2.8 on white. */
-  --orange-display: #EF6C0A;
+  /* ---- ink ---- */
+  --ink: #13233F;       /* headings — Telenow navy */
+  --body: #35435C;      /* body copy — 9.9:1 on white */
+  --mut: #55637C;       /* secondary — 6.1:1 */
+  --faint: #616D85;     /* small labels — 5.2:1 on white, 4.5:1 on peach */
+  --navy: #0E2A55;      /* primary button fill — white on it is 14.2:1 */
+  --navy-deep: #0B1A33; /* footer, inverted blocks */
+
+  /* ---- rules ---- */
+  --rule: #E8E3DA;
+  --rule-2: #D8D2C7;
+  --rule-cool: #DDE4EE;
+
+  /* ---- brand ---- */
+  --orange: #F26B1D;
+  --orange-hover: #E0641A;   /* the darkest orange that still clears 4.5:1 under --on-orange */
+  --orange-soft: #FDECDD;
+  --orange-tint: #FEF6EF;
+  /* #F26B1D is 3.05:1 on white — a fill colour, not a text colour. Text
+     borrows one of the two below depending on its size. */
+  --orange-text: #A8430C;    /* < 24px — 6.1:1 on white */
+  --orange-display: #C04F0C; /* >= 24px — 4.8:1 on white */
+  --on-orange: #0B1A33;      /* what sits on an orange fill — 5.7:1 */
 
   /* Diverging sentiment scale for the call simulator — blue/grey/red, a
-     polarity ramp rather than a categorical one, and validated against white.
-     (The categorical series slots left with the analytics section.) */
+     polarity ramp rather than a categorical one, validated against white. */
   --div-pos: #256abf;
-  --div-neu: #9C998E;
-  --div-neg: #d03b3b;
+  --div-neu: #8D8A80;
+  --div-neg: #C2372F;
 
   --pad: 20px;
   --max: 1200px;
-  --r: 8px;
-  --r-lg: 14px;
+  --r-sm: 8px;
+  --r: 12px;
+  --r-lg: 16px;
+  --r-xl: 22px;
 
-  --sh-1: 0 1px 2px rgba(16, 14, 10, 0.04), 0 1px 1px rgba(16, 14, 10, 0.03);
-  --sh-2: 0 2px 4px rgba(16, 14, 10, 0.03), 0 10px 20px -10px rgba(16, 14, 10, 0.10);
-  --sh-3: 0 4px 8px rgba(16, 14, 10, 0.04), 0 20px 38px -16px rgba(16, 14, 10, 0.16);
-  --sh-lift: 0 8px 14px rgba(16, 14, 10, 0.05), 0 30px 54px -22px rgba(16, 14, 10, 0.20);
-  --sh-brand: 0 2px 6px rgba(194, 65, 12, 0.16), 0 12px 24px -10px rgba(194, 65, 12, 0.30);
+  /* Telenow's shadows: a 1px contact edge plus one wide, lifted pool, both
+     tinted with the ink navy. Pure black reads grey and cheap on warm white. */
+  --sh-1: 0 1px 2px rgba(19, 35, 63, 0.05), 0 4px 14px -8px rgba(19, 35, 63, 0.12);
+  --sh-2: 0 1px 2px rgba(19, 35, 63, 0.05), 0 10px 28px -18px rgba(19, 35, 63, 0.28);
+  --sh-3: 0 2px 4px rgba(19, 35, 63, 0.05), 0 20px 50px -24px rgba(19, 35, 63, 0.30);
+  --sh-lift: 0 4px 8px rgba(19, 35, 63, 0.06), 0 34px 68px -28px rgba(19, 35, 63, 0.38);
+  --sh-brand: 0 1px 2px rgba(139, 55, 10, 0.14), 0 12px 26px -12px rgba(139, 55, 10, 0.34);
+  --sh-navy: 0 1px 2px rgba(11, 26, 51, 0.18), 0 14px 30px -14px rgba(11, 26, 51, 0.44);
 
   --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
   --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  /* Telenow's display face, matched to telenow.ai exactly. */
+  --display: Georgia, 'Iowan Old Style', 'Times New Roman', ui-serif, serif;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @media (min-width: 720px) { :root { --pad: 28px; } }
 @media (min-width: 1024px) { :root { --pad: 40px; } }
 
-html { scroll-behavior: smooth; scroll-padding-top: 82px; }
+html { scroll-behavior: smooth; scroll-padding-top: 104px; }
 
 body {
   font-family: var(--sans);
@@ -71,7 +96,7 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
-  padding-bottom: 70px; /* sticky mobile CTA */
+  padding-bottom: 74px; /* sticky mobile CTA */
 }
 
 @media (min-width: 900px) { body { padding-bottom: 0; } }
@@ -81,9 +106,9 @@ button { border: none; background: none; cursor: pointer; }
 a { color: inherit; text-decoration: none; }
 ul, ol { list-style: none; }
 img, svg { display: block; max-width: 100%; }
-::selection { background: var(--orange); color: #0A0A0A; }
+::selection { background: var(--peach-2); color: var(--ink); }
 
-:focus-visible { outline: 2px solid var(--orange); outline-offset: 3px; border-radius: 3px; }
+:focus-visible { outline: 2px solid var(--orange); outline-offset: 3px; border-radius: 4px; }
 
 .hindi { font-family: 'Hind', var(--sans); }
 .mono { font-family: var(--mono); font-variant-ligatures: none; }
@@ -98,14 +123,27 @@ img, svg { display: block; max-width: 100%; }
 
 .section {
   position: relative;
-  padding-block: clamp(64px, 8vw, 124px);
+  padding-block: clamp(68px, 8.4vw, 132px);
   overflow-x: clip;
 }
 
+/* Not a flat fill: a cream ceiling falling into the bone, with a peach
+   bloom drifting in from one side. Flat bands are what make a long page
+   read as a template. */
 .section-alt {
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.7), transparent 180px),
-    var(--bone);
+    radial-gradient(72% 58% at 88% 0%, rgba(253, 236, 221, 0.72), transparent 62%),
+    linear-gradient(180deg, var(--cream) 0%, var(--bone) 46%, var(--bone) 100%);
+}
+
+.section-alt::before,
+.section::after { content: none; }
+
+/* A hairline that fades at both ends — the section boundary as a drawn
+   line rather than a hard border. */
+.section-alt {
+  border-top: 1px solid transparent;
+  border-image: linear-gradient(90deg, transparent, var(--rule) 18%, var(--rule) 82%, transparent) 1;
 }
 
 /* Decorative blooms from the earlier dark build — kept out of the light one. */
@@ -113,37 +151,58 @@ img, svg { display: block; max-width: 100%; }
 
 /* ---- type ------------------------------------------------------------- */
 
-h1, h2, h3, h4 { font-weight: 300; letter-spacing: -0.015em; line-height: 1.16; color: var(--ink); }
+h1, h2, h3, h4 {
+  font-family: var(--display);
+  font-weight: 500;
+  letter-spacing: -0.017em;
+  line-height: 1.1;
+  color: var(--ink);
+}
+
+/* Component headings that are UI labels rather than display type opt back
+   into the sans — the serif is for the things people read, not the chrome. */
+.h-ui, .footer-cols h4 { font-family: var(--sans); letter-spacing: 0; }
 
 .h2 {
-  font-size: clamp(27px, 3.8vw, 46px);
-  max-width: 22ch;
+  font-size: clamp(29px, 4vw, 48px);
+  line-height: 1.06;
+  max-width: 20ch;
   text-wrap: balance;
 }
 
 .lede {
-  margin-top: 16px;
-  font-size: clamp(15px, 1.5vw, 17px);
-  line-height: 1.65;
+  margin-top: 18px;
+  font-size: clamp(15.5px, 1.5vw, 17.5px);
+  line-height: 1.66;
   color: var(--mut);
-  max-width: 60ch;
+  max-width: 58ch;
   text-wrap: pretty;
 }
 
 .eyebrow {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   font-family: var(--mono);
   font-size: 11px;
   font-weight: 500;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--orange-text);
-  margin-bottom: 16px;
+  margin-bottom: 18px;
+}
+
+/* The rule that trails an eyebrow — a Telenow signature on their own site. */
+.eyebrow::after {
+  content: '';
+  width: 26px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--peach-2), transparent);
 }
 
 .eyebrow.t-aqua, .eyebrow.t-steel { color: var(--orange-text); }
 
-.sec-head { margin-bottom: clamp(30px, 4.5vw, 52px); }
+.sec-head { margin-bottom: clamp(34px, 4.8vw, 58px); }
 
 .sec-head-split { display: grid; gap: 18px; }
 
@@ -151,20 +210,34 @@ h1, h2, h3, h4 { font-weight: 300; letter-spacing: -0.015em; line-height: 1.16; 
   .sec-head-split {
     grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
     align-items: end;
-    gap: 48px;
+    gap: 52px;
   }
-  .sec-head-split .lede { margin-top: 0; padding-bottom: 4px; }
+  .sec-head-split .lede { margin-top: 0; padding-bottom: 5px; }
 }
 
 /* ---- surfaces --------------------------------------------------------- */
 
 .card, .panel {
   position: relative;
-  background: var(--white);
+  /* Barely a gradient — but a card that fades a shade warmer at its foot
+     reads as a surface with a light on it, where a flat fill reads as a
+     rectangle someone drew. */
+  background: linear-gradient(180deg, #FFFFFF 0%, #FDFCF9 100%);
   border: 1px solid var(--rule);
   border-radius: var(--r);
-  box-shadow: var(--sh-1);
-  transition: box-shadow 0.32s var(--ease), transform 0.32s var(--ease), border-color 0.32s;
+  box-shadow: 0 1px 2px rgba(19, 35, 63, 0.05), 0 8px 24px -14px rgba(19, 35, 63, 0.22);
+  transition: box-shadow 0.34s var(--ease), transform 0.34s var(--ease), border-color 0.34s;
+}
+
+/* A one-pixel inner highlight along the top edge. It is the difference
+   between a card that sits on the page and one that is cut out of it. */
+.card::before, .panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
 .section-alt .card, .section-alt .panel { background: var(--white); }
@@ -172,62 +245,119 @@ h1, h2, h3, h4 { font-weight: 300; letter-spacing: -0.015em; line-height: 1.16; 
 /* ---- buttons ---------------------------------------------------------- */
 
 .btn {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 9px;
-  min-height: 46px;
+  gap: 10px;
+  min-height: 48px;
   padding: 0 24px;
   border-radius: 999px;
-  font-size: 14px;
+  font-size: 14.5px;
   font-weight: 500;
-  letter-spacing: 0;
+  letter-spacing: -0.005em;
   white-space: nowrap;
-  transition: background 0.18s, border-color 0.18s, color 0.18s, transform 0.16s var(--ease);
+  transition: background 0.2s, border-color 0.2s, color 0.2s,
+              box-shadow 0.28s var(--ease), transform 0.18s var(--ease);
 }
 
 .btn:active { transform: translateY(1px); }
 
+/* Primary is Telenow's navy, not the orange: white on navy is 14.2:1 where
+   white on #F26B1D is 3.05:1. The orange stays a fill and an accent. */
 .btn-primary {
-  background: var(--orange);
-  color: #0A0A0A;
+  background: linear-gradient(180deg, #16386B 0%, var(--navy) 58%, #0B2246 100%);
+  color: #fff;
+  font-weight: 500;
+  box-shadow: var(--sh-navy);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(180deg, #1B4179 0%, #12325F 58%, #0D2951 100%);
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(11, 26, 51, 0.2), 0 20px 40px -16px rgba(11, 26, 51, 0.52);
+}
+
+/* GoKwik's chevron badge, rebuilt: the arrow rides in its own disc. */
+.btn-primary .ico,
+.btn-accent .ico {
+  width: 25px;
+  height: 25px;
+  padding: 4.5px;
+  margin-right: -9px;
+  margin-left: -1px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.17);
+  transition: transform 0.28s var(--ease), background 0.2s;
+}
+
+.btn-primary:hover .ico,
+.btn-accent:hover .ico { transform: translateX(2px); background: rgba(255, 255, 255, 0.26); }
+
+/* An icon that leads the label is a glyph, not a badge. */
+.btn-primary .ico:first-child,
+.btn-accent .ico:first-child {
+  padding: 0; margin: 0; width: auto; height: auto; background: none; border-radius: 0;
+}
+
+.btn-accent {
+  background: linear-gradient(180deg, #F8823A 0%, var(--orange) 60%, #E35F13 100%);
+  color: var(--on-orange);
   font-weight: 600;
   box-shadow: var(--sh-brand);
 }
 
-.btn-primary:hover {
-  background: var(--orange-hover);
-  color: #0A0A0A;
+.btn-accent .ico { background: rgba(11, 26, 51, 0.14); }
+.btn-accent:hover .ico { background: rgba(11, 26, 51, 0.2); }
+
+.btn-accent:hover {
+  background: linear-gradient(180deg, #F97534 0%, #EC6E20 60%, var(--orange-hover) 100%);
+  color: var(--on-orange);
   transform: translateY(-1px);
-  box-shadow: 0 4px 10px rgba(194, 65, 12, 0.2), 0 18px 32px -12px rgba(194, 65, 12, 0.38);
+  box-shadow: 0 2px 6px rgba(139, 55, 10, 0.2), 0 20px 38px -14px rgba(139, 55, 10, 0.42);
 }
 
-.btn-ghost { box-shadow: var(--sh-1); }
+.btn-ghost {
+  background: var(--white);
+  border: 1px solid var(--rule-2);
+  color: var(--ink);
+  box-shadow: var(--sh-1);
+}
 
-.btn-ghost { background: transparent; border: 1px solid var(--rule-2); color: var(--ink); }
-.btn-ghost:hover { border-color: var(--ink); background: var(--white); }
+.btn-ghost:hover {
+  border-color: var(--ink);
+  background: var(--white);
+  transform: translateY(-1px);
+  box-shadow: var(--sh-2);
+}
 
-.btn-sm { min-height: 38px; padding: 0 17px; font-size: 13px; }
-.btn-lg { min-height: 52px; padding: 0 28px; font-size: 15px; }
+.btn-sm { min-height: 40px; padding: 0 18px; font-size: 13.5px; gap: 8px; }
+.btn-sm .ico:not(:first-child) { width: 21px; height: 21px; padding: 3.5px; margin-right: -7px; }
+.btn-lg { min-height: 54px; padding: 0 28px; font-size: 15.5px; }
+.btn-lg .ico:not(:first-child) { width: 28px; height: 28px; padding: 5px; margin-right: -10px; }
 .btn-block { width: 100%; }
 .btn .ico { flex: none; }
 
-.cta-row { display: flex; flex-wrap: wrap; gap: 11px; align-items: center; }
+.cta-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
 
 /* ---- pills & chips ---------------------------------------------------- */
 
 .pill {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  height: 26px;
-  padding: 0 12px;
+  gap: 8px;
+  height: 28px;
+  padding: 0 13px;
   border-radius: 999px;
-  border: 1px solid var(--rule-2);
-  background: var(--white);
+  border: 1px solid var(--rule);
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: var(--sh-1);
   font-family: var(--mono);
   font-size: 10.5px;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
   color: var(--mut);
   white-space: nowrap;
@@ -235,7 +365,7 @@ h1, h2, h3, h4 { font-weight: 300; letter-spacing: -0.015em; line-height: 1.16; 
 
 .pill.t-rev, .pill.t-aqua, .pill.t-steel {
   color: var(--orange-text);
-  border-color: #F6D5B8;
+  border-color: var(--peach-2);
   background: var(--orange-soft);
 }
 
@@ -244,25 +374,26 @@ h1, h2, h3, h4 { font-weight: 300; letter-spacing: -0.015em; line-height: 1.16; 
 .dot-live { background: var(--orange); animation: ping 2.4s var(--ease) infinite; }
 
 @keyframes ping {
-  0% { box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.5); }
-  70%, 100% { box-shadow: 0 0 0 8px rgba(249, 115, 22, 0); }
+  0% { box-shadow: 0 0 0 0 rgba(242, 107, 29, 0.5); }
+  70%, 100% { box-shadow: 0 0 0 8px rgba(242, 107, 29, 0); }
 }
 
 .chip {
   display: grid;
   place-items: center;
-  width: 38px;
-  height: 38px;
-  border-radius: 9px;
-  border: 1px solid var(--rule);
-  background: var(--orange-tint);
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  border: 1px solid var(--peach-2);
+  background: linear-gradient(150deg, var(--peach) 0%, #FFFFFF 100%);
   color: var(--orange-text);
+  box-shadow: 0 1px 2px rgba(19, 35, 63, 0.05);
   flex: none;
 }
 
 .chip.t-aqua, .chip.t-rev, .chip.t-steel {
-  background: var(--orange-soft);
-  border-color: #F6D5B8;
+  background: linear-gradient(150deg, var(--peach) 0%, #FFFFFF 100%);
+  border-color: var(--peach-2);
   color: var(--orange-text);
 }
 
@@ -270,8 +401,8 @@ h1, h2, h3, h4 { font-weight: 300; letter-spacing: -0.015em; line-height: 1.16; 
 
 .reveal {
   opacity: 0;
-  transform: translateY(16px);
-  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+  transform: translateY(18px);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
 }
 
 .reveal.is-visible { opacity: 1; transform: none; }

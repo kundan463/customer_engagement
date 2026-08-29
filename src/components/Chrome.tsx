@@ -28,6 +28,27 @@ const LINKS = [
   { href: '#agents', label: 'Agents' },
 ]
 
+/** The mark: a mic in a rounded tile, on the brand orange. */
+function BrandMark() {
+  return (
+    <span className="brand-mark" aria-hidden="true">
+      <svg viewBox="0 0 28 28" width="27" height="27" fill="none" aria-hidden="true">
+        <rect x="1" y="1" width="26" height="26" rx="8.5" fill="url(#tnMark)" />
+        <rect x="1.5" y="1.5" width="25" height="25" rx="8" stroke="rgba(11,26,51,.14)" />
+        <path d="M8.5 10.5a5.5 5.5 0 0 1 11 0v3a5.5 5.5 0 0 1-11 0Z" stroke="#0B1A33" strokeWidth="1.7" />
+        <path d="M14 19.5v3M10.5 22.5h7" stroke="#0B1A33" strokeWidth="1.7" strokeLinecap="round" />
+        <defs>
+          <linearGradient id="tnMark" x1="0" y1="0" x2="28" y2="28">
+            <stop stopColor="#FBA36A" />
+            <stop offset="0.55" stopColor="#F26B1D" />
+            <stop offset="1" stopColor="#DC5A11" />
+          </linearGradient>
+        </defs>
+      </svg>
+    </span>
+  )
+}
+
 export function Nav() {
   const [stuck, setStuck] = useState(false)
   const [open, setOpen] = useState(false)
@@ -47,44 +68,34 @@ export function Nav() {
 
   return (
     <header className={stuck ? 'nav is-stuck' : 'nav'}>
-      <div className="wrap nav-in">
-        <a href="#top" className="brand" aria-label="Telenow — home">
-          <span className="brand-mark" aria-hidden="true">
-            <svg viewBox="0 0 28 28" width="26" height="26" fill="none" aria-hidden="true">
-              <rect x="1" y="1" width="26" height="26" rx="8" fill="url(#bg)" />
-              <path d="M8.5 10.5a5.5 5.5 0 0 1 11 0v3a5.5 5.5 0 0 1-11 0Z" stroke="#12060A" strokeWidth="1.7" />
-              <path d="M14 19.5v3M10.5 22.5h7" stroke="#12060A" strokeWidth="1.7" strokeLinecap="round" />
-              <defs>
-                <linearGradient id="bg" x1="0" y1="0" x2="28" y2="28">
-                  <stop stopColor="#FFA153" />
-                  <stop offset="1" stopColor="#FF7A1A" />
-                </linearGradient>
-              </defs>
-            </svg>
-          </span>
-          <span className="brand-word">telenow</span>
-        </a>
+      <div className="wrap">
+        <div className="nav-in">
+          <a href="#top" className="brand" aria-label="Telenow — home">
+            <BrandMark />
+            <span className="brand-word">telenow</span>
+          </a>
 
-        <nav className="nav-links" aria-label="Sections">
-          {LINKS.map((l) => (
-            <a key={l.href} href={l.href}>{l.label}</a>
-          ))}
-        </nav>
+          <nav className="nav-links" aria-label="Sections">
+            {LINKS.map((l) => (
+              <a key={l.href} href={l.href}>{l.label}</a>
+            ))}
+          </nav>
 
-        <div className="nav-actions">
-          <CallButton className="btn btn-ghost btn-sm nav-hide-sm">
-            <Icon name="voice" size={15} />
-            Live agent
-          </CallButton>
-          <a href="#demo" className="btn btn-primary btn-sm">Book demo</a>
-          <button
-            className="nav-burger"
-            aria-expanded={open}
-            aria-label={open ? 'Close menu' : 'Open menu'}
-            onClick={() => setOpen((v) => !v)}
-          >
-            <span className={open ? 'burger is-x' : 'burger'} aria-hidden="true"><i /><i /></span>
-          </button>
+          <div className="nav-actions">
+            <CallButton className="btn btn-ghost btn-sm nav-hide-sm">
+              <Icon name="voice" size={15} />
+              Live agent
+            </CallButton>
+            <a href="#demo" className="btn btn-primary btn-sm">Book demo</a>
+            <button
+              className="nav-burger"
+              aria-expanded={open}
+              aria-label={open ? 'Close menu' : 'Open menu'}
+              onClick={() => setOpen((v) => !v)}
+            >
+              <span className={open ? 'burger is-x' : 'burger'} aria-hidden="true"><i /><i /></span>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -123,6 +134,7 @@ export function Footer() {
         <div className="footer-top">
           <div className="footer-brand">
             <a href="#top" className="brand">
+              <BrandMark />
               <span className="brand-word">telenow</span>
             </a>
             <p>

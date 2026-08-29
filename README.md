@@ -22,38 +22,61 @@ npm run dev
 
 ## Design system
 
-Light and airy, modelled on **gokwik.co** — white ground, a warm bone alternating
-band, light-weight display type, pill buttons, hairline rules and small radii.
-The palette stays **Telenow**: `#F97316` orange on `#0A0A0A` ink.
+The *look* is Telenow's own, taken from **telenow.ai**: a serif display face
+over navy ink, `#F26B1D` orange, warm bone and peach tints, floating pill
+chrome and a soft navy-tinted shadow scale.
+
+The *structure* is **gokwik.co**'s business-site rhythm — alternating bands,
+pill CTAs with a chevron badge, a trust strip, hairline rules, and the four
+underscored verbs under the headline.
 
 | Token | Value | Role |
 | --- | --- | --- |
 | `--white` | `#FFFFFF` | page ground |
-| `--bone` | `#F5F4EE` | alternating band (`.section-alt`), footer |
-| `--paper` | `#FAFAF8` | inset panels inside cards |
-| `--ink` | `#0A0A0A` | headings |
-| `--body` | `#2F2F2F` | body copy |
-| `--mut` | `#5C5C5C` | secondary — 6.5:1 on white |
-| `--faint` | `#6E6E6E` | small labels — 4.6:1 on the bone band |
-| `--rule` / `--rule-2` | `#E6E4DD` / `#D6D3CA` | hairlines |
-| `--orange` | `#F97316` | fills — buttons, dots, bars |
-| `--orange-display` | `#EF6C0A` | orange text ≥24px (3.1:1) |
-| `--orange-text` | `#C2410C` | orange text <24px (5.9:1) |
+| `--cream` / `--bone` | `#FBF8F3` / `#F5F1EA` | the alternating band, top to bottom |
+| `--peach` / `--peach-2` / `--peach-3` | `#FDECDD` / `#FBDCC4` / `#FDE3CC` | brand tints and the hero wash |
+| `--mist` | `#DFE7F5` | the cool half of the hero wash |
+| `--ink` | `#13233F` | headings — Telenow navy |
+| `--body` | `#35435C` | body copy — 10:1 on white |
+| `--mut` | `#55637C` | secondary — 6.1:1 |
+| `--faint` | `#616D85` | small labels — 5.2:1 on white, 4.5:1 on peach |
+| `--navy` | `#0E2A55` | primary button fill — white on it is 14.2:1 |
+| `--navy-deep` | `#0B1A33` | footer, the closing panel, text on orange |
+| `--rule` / `--rule-2` | `#E8E3DA` / `#D8D2C7` | warm hairlines |
+| `--orange` | `#F26B1D` | fills — accents, dots, bars |
+| `--orange-display` | `#C04F0C` | orange text >=24px (4.8:1) |
+| `--orange-text` | `#A8430C` | orange text <24px (6.1:1) |
 
-Type is **Inter at weight 300** for display (GoKwik's most recognisable trait),
-400–600 for UI. **Hind** covers the Devanagari in the Hinglish call script.
+Display type is **Georgia** — `Georgia, 'Iowan Old Style', 'Times New Roman',
+ui-serif, serif`, the exact stack telenow.ai uses, at weight 500 with -0.02em
+tracking. It is the single most recognisable Telenow trait and the thing that
+separates this page from every other white SaaS template. **Inter** carries all
+UI and body text; **Hind** covers the Devanagari in the Hinglish call script.
+
+The rule is *serif for display, sans for chrome*: section headings, the hero,
+step titles, the agent name and every stat figure are serif; card titles, labels,
+buttons and table text are Inter 600 — the same split telenow.ai draws.
 
 ### Three oranges, on purpose
 
-`#F97316` measures **3.0:1 on white** and **2.8:1 against white text** — it works
-as a *fill* but fails as text in both directions. So:
+`#F26B1D` measures **3.05:1 on white** and **3.05:1 against white text** — it
+works as a *fill* but fails as text in both directions. So:
 
-- **fills** (buttons, the active rail dot, progress bars) use `--orange` with
-  **ink** text on top, never white;
-- **display text ≥24px** uses `--orange-display`;
+- **fills** (the accent button, the active tab, progress bars) use `--orange`
+  with `--on-orange` `#0B1A33` on top, never white — 5.7:1;
+- **display text >=24px** uses `--orange-display`;
 - **small text** uses `--orange-text`.
 
-The page passes a full-page contrast sweep with **zero AA failures**.
+The **primary** button is not orange at all: it is `--navy`, because white on
+`#0E2A55` is 14.2:1 where white on the orange is 3.05:1. The orange primary
+appears only on the inverted closing panel, where navy would vanish — and there
+it carries `--on-orange` ink.
+
+Every gradient fill was checked stop by stop; `--orange-hover` `#E0641A` is the
+darkest orange in the system that still clears 4.5:1 under `--on-orange`.
+
+A full-page sweep — every text node against its resolved ground, taking the
+worst stop of any gradient behind it — returns **zero AA failures**.
 
 ## Layout
 
@@ -163,15 +186,29 @@ backgrounded tab resumes where it paused instead of jumping to the end.
 
 ## Depth, not borders
 
-What separates this from a flat template is the shadow scale (`--sh-1` …
-`--sh-lift`), tinted warm — `rgba(16,14,10,…)`, never pure black, which reads
-grey and cheap against a warm white. Cards rest on `--sh-1`, lift to `--sh-3` on
-hover, and the primary button carries an orange-tinted `--sh-brand`. The
-alternating band is a soft gradient into the bone rather than one flat fill.
+What separates this from a flat template is the shadow scale (`--sh-1` ...
+`--sh-lift`), tinted with the ink navy — `rgba(19, 35, 63, ...)`, never pure
+black, which reads grey and cheap against a warm white. Every shadow is a pair:
+a 1px contact edge plus one wide, lifted pool. Cards rest on that pair, lift to
+`--sh-3` on hover, carry a 1px inner highlight along their top edge, and fade
+one shade warmer at the foot.
 
-The call simulator's sentiment bar is a **diverging** scale (blue → grey → red),
-a polarity ramp rather than a categorical one, with every segment direct-labelled
-and the in-fill label taking white or ink by the fill's luminance.
+Nothing on the page is a flat fill. The hero ground is two temperatures at once
+— a peach bloom falling from the top centre, a cool `--mist` one drifting in
+from the right — resolved by a hairline horizon at the bottom so it reads as
+design rather than a smudge. The alternating band is a cream ceiling falling
+into the bone with a peach bloom off one shoulder. The nav is a floating pill
+card, not a full-bleed bar.
+
+The page is light for its whole length and then lands on two dark blocks: the
+closing panel and the footer, both `--navy-deep` under an orange and a blue
+radial, each with a brand hairline across the top edge. A long light document
+needs somewhere to land.
+
+The call simulator's sentiment bar is a **diverging** scale (blue -> grey ->
+red), a polarity ramp rather than a categorical one, with every segment
+direct-labelled and the in-fill label taking white or ink by the fill's
+luminance.
 
 ## Content
 

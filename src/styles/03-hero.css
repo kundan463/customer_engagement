@@ -1,6 +1,10 @@
 /* =====================================================================
    SECTION 1 — hero + the customer journey as floating surfaces
 
+   The ground is telenow.ai's own: a peach bloom falling from the top
+   centre, a cool blue-grey one drifting in from the right, over near
+   white. Two temperatures, so the white never goes flat.
+
    The right column is a phone whose thread accumulates as the journey
    advances, with three cards floating around it that swap per stage.
    ===================================================================== */
@@ -8,10 +12,34 @@
 .hero {
   position: relative;
   overflow: hidden;
-  padding-block: clamp(36px, 5vw, 72px) clamp(48px, 6.5vw, 92px);
+  margin-top: -78px;          /* the nav floats over the wash */
+  padding-block: clamp(112px, 12vw, 158px) clamp(52px, 6.5vw, 96px);
 }
 
-.hero-in { position: relative; display: grid; gap: clamp(40px, 5vw, 56px); }
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: -140px 0 auto;
+  height: 940px;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(64% 52% at 50% 0%, var(--peach-3) 0%, transparent 62%),
+    radial-gradient(46% 58% at 90% 22%, var(--mist) 0%, transparent 58%),
+    radial-gradient(50% 44% at 6% 42%, rgba(253, 236, 221, 0.72) 0%, transparent 62%);
+}
+
+/* A hairline horizon: the wash resolves into a line rather than fading to
+   nothing, which is what keeps it reading as design and not as a smudge. */
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--rule) 20%, var(--rule) 80%, transparent);
+}
+
+.hero-in { position: relative; z-index: 1; display: grid; gap: clamp(44px, 5vw, 58px); }
 
 /* Grid items size to their content by default, so one over-wide child (the
    journey rail) would stretch the whole column past the viewport and get
@@ -22,27 +50,45 @@
   .hero-in {
     grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
     align-items: center;
-    gap: 40px;
+    gap: 44px;
   }
 }
 
-.hero-badge { height: 30px; padding: 0 14px; margin-bottom: 20px; }
+.hero-badge { height: 32px; padding: 0 15px; margin-bottom: 24px; }
 
 .hero-h1 {
-  font-size: clamp(38px, 5.6vw, 64px);
-  font-weight: 300;
-  line-height: 1.08;
-  letter-spacing: -0.022em;
+  font-family: var(--display);
+  font-size: clamp(40px, 5.1vw, 62px);
+  font-weight: 500;
+  line-height: 1.04;
+  letter-spacing: -0.021em;
   color: var(--ink);
   text-wrap: balance;
 }
 
-.hero-em { color: var(--orange-display); }
+.hero-em {
+  position: relative;
+  color: var(--orange-display);
+  font-style: italic;
+}
+
+/* The word is underscored by a brand stroke rather than a text underline —
+   it sits below the descenders instead of cutting through them. */
+.hero-em::after {
+  content: '';
+  position: absolute;
+  left: 0.04em;
+  right: 0.04em;
+  bottom: -0.02em;
+  height: 3px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--orange), var(--peach-2));
+}
 
 .hero-sub {
-  margin-top: 18px;
-  font-size: clamp(15px, 1.5vw, 17px);
-  line-height: 1.62;
+  margin-top: 22px;
+  font-size: clamp(15.5px, 1.5vw, 17.5px);
+  line-height: 1.66;
   color: var(--mut);
   max-width: 50ch;
   text-wrap: pretty;
@@ -52,31 +98,44 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 10px 14px;
-  margin-top: 22px;
+  gap: 10px 16px;
+  margin-top: 26px;
   font-size: clamp(16px, 1.8vw, 19px);
   font-weight: 500;
   color: var(--ink);
+}
+
+/* GoKwik underscores the four verbs; the rule is brand-coloured and sits
+   clear of the baseline. */
+.hero-verbs span {
+  padding-bottom: 4px;
+  border-bottom: 2px solid var(--peach-2);
 }
 
 /* A divider is a rule, not a character — drawn, so it isn't text that has to
    clear a contrast bar it was never meant to carry. */
 .hero-verbs i { width: 1px; height: 17px; background: var(--rule-2); flex: none; }
 
-.hero-cta { margin-top: 26px; }
+.hero-cta { margin-top: 30px; }
 
 .hero-proof {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 26px;
-  margin-top: 28px;
-  padding-top: 20px;
+  gap: 10px 30px;
+  margin-top: 32px;
+  padding-top: 22px;
   border-top: 1px solid var(--rule);
   font-size: 13.5px;
   color: var(--mut);
 }
 
-.hero-proof strong { color: var(--ink); font-weight: 600; }
+.hero-proof strong {
+  font-family: var(--display);
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
 
 /* =====================================================================
    The visualisation
@@ -90,16 +149,16 @@
   gap: 16px;
 }
 
-/* A wash rather than an object: gives the white page depth behind the phone
-   without adding anything the reader has to parse. */
+/* A tighter bloom directly behind the handset, so it lifts off the page
+   wash rather than floating on nothing. */
 .hv::before {
   content: '';
   position: absolute;
-  inset: -6% -12% 4%;
+  inset: -4% -10% 2%;
   z-index: 0;
   border-radius: 50%;
-  background: radial-gradient(ellipse at 50% 45%, rgba(249, 115, 22, 0.10), rgba(249, 115, 22, 0.03) 45%, transparent 70%);
-  filter: blur(24px);
+  background: radial-gradient(ellipse at 50% 45%, rgba(242, 107, 29, 0.13), rgba(242, 107, 29, 0.04) 46%, transparent 70%);
+  filter: blur(26px);
   pointer-events: none;
 }
 
@@ -112,11 +171,11 @@
   padding: 11px;
   border-radius: 54px;
   /* a machined edge: light catches the top-left, falls away to the right */
-  background: linear-gradient(152deg, #47474F 0%, #1B1B1F 16%, #141417 50%, #1B1B1F 84%, #3E3E46 100%);
+  background: linear-gradient(152deg, #4A4A55 0%, #1C1C22 16%, #131318 50%, #1C1C22 84%, #3F3F4A 100%);
   box-shadow:
-    0 0 0 1px rgba(0, 0, 0, 0.55),
-    0 46px 84px -36px rgba(10, 10, 10, 0.62),
-    0 10px 22px -12px rgba(10, 10, 10, 0.28),
+    0 0 0 1px rgba(11, 26, 51, 0.55),
+    0 54px 92px -40px rgba(11, 26, 51, 0.6),
+    0 12px 26px -14px rgba(11, 26, 51, 0.3),
     inset 0 1px 1px rgba(255, 255, 255, 0.26);
 }
 
@@ -127,7 +186,7 @@
   position: absolute;
   width: 3px;
   border-radius: 3px;
-  background: linear-gradient(180deg, #4C4C55, #26262B);
+  background: linear-gradient(180deg, #4C4C58, #26262E);
 }
 
 .hv-phone::before { left: -3px; top: 116px; height: 58px; }
@@ -201,12 +260,12 @@
   overflow-y: auto;
   scrollbar-width: thin;
   background: #EDE7DE;
-  background-image: radial-gradient(rgba(10, 10, 10, 0.045) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(19, 35, 63, 0.05) 1px, transparent 1px);
   background-size: 16px 16px;
 }
 
 .hv-thread::-webkit-scrollbar { width: 4px; }
-.hv-thread::-webkit-scrollbar-thumb { background: rgba(10, 10, 10, 0.18); border-radius: 4px; }
+.hv-thread::-webkit-scrollbar-thumb { background: rgba(19, 35, 63, 0.2); border-radius: 4px; }
 
 .hvm { display: flex; max-width: 86%; }
 .hvm-cx { align-self: flex-end; justify-content: flex-end; }
@@ -223,7 +282,7 @@
   line-height: 1.45;
   color: var(--ink);
   background: #fff;
-  box-shadow: 0 1px 1px rgba(10, 10, 10, 0.12);
+  box-shadow: 0 1px 1px rgba(19, 35, 63, 0.14);
 }
 
 .hvm-ai .hvm-bubble { border-top-left-radius: 3px; }
@@ -265,17 +324,18 @@
   display: flex;
   flex-direction: column;
   padding: 12px 13px;
-  border: 1px solid #F0D6BC;
-  background: #FFF8F2;
+  border: 1px solid var(--peach-2);
+  background: linear-gradient(150deg, var(--peach) 0%, #FFFDFB 100%);
 }
 
 .hvm-reward-k { font-size: 9px; letter-spacing: 0.13em; color: var(--faint); }
 
 .hvm-reward-v {
   margin-top: 3px;
-  font-size: 21px;
-  font-weight: 600;
-  letter-spacing: -0.03em;
+  font-family: var(--display);
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.025em;
   color: var(--orange-text);
 }
 
@@ -283,8 +343,8 @@
   align-self: flex-start;
   margin-top: 8px;
   padding: 4px 9px;
-  border-radius: 5px;
-  border: 1px dashed #E8BE99;
+  border-radius: 6px;
+  border: 1px dashed #E9B98F;
   background: #fff;
   font-size: 10.5px;
   letter-spacing: 0.08em;
@@ -299,7 +359,7 @@
   font-size: 10px;
   line-height: 1.4;
   text-align: center;
-  color: #5C5C5C;
+  color: var(--mut);
   word-break: break-word;
 }
 
@@ -311,18 +371,20 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 8px 8px 8px 14px;
+  padding: 8px 8px 8px 15px;
   border-radius: 999px;
   border: 1px solid var(--rule);
-  background: var(--white);
-  box-shadow: 0 8px 20px -14px rgba(10, 10, 10, 0.3);
+  background: rgba(255, 255, 255, 0.86);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: var(--sh-2);
 }
 
 .hv-rail-head { font-size: 9.5px; letter-spacing: 0.14em; color: var(--faint); white-space: nowrap; }
 
 /* Ten dots, a label and a toggle don't fit on one line on a phone. */
 @media (max-width: 560px) {
-  .hv-rail { flex-wrap: wrap; justify-content: center; row-gap: 8px; padding: 10px 12px; border-radius: 18px; }
+  .hv-rail { flex-wrap: wrap; justify-content: center; row-gap: 8px; padding: 10px 12px; border-radius: 20px; }
   .hv-rail-head { width: 100%; text-align: center; }
 }
 
@@ -348,17 +410,18 @@
 }
 
 .hv-dot:hover { transform: scale(1.2); }
-.hv-dot.is-done::after { background: #F6C79B; }
+.hv-dot.is-done::after { background: var(--peach-2); }
 .hv-dot.is-active::after { background: var(--orange); width: 11px; height: 11px; }
 
 .hv-toggle {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  height: 26px;
-  padding: 0 11px;
+  height: 28px;
+  padding: 0 12px;
   border-radius: 999px;
   border: 1px solid var(--rule-2);
+  background: var(--white);
   font-family: var(--mono);
   font-size: 10px;
   letter-spacing: 0.06em;
@@ -374,11 +437,13 @@
 .hv-card {
   width: 100%;
   max-width: 300px;
-  padding: 13px 15px;
-  border-radius: 12px;
+  padding: 14px 16px;
+  border-radius: var(--r);
   border: 1px solid var(--rule);
-  background: var(--white);
-  box-shadow: 0 14px 32px -20px rgba(10, 10, 10, 0.4);
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: var(--sh-3);
 }
 
 /* below the phone on small screens, floating around it on large ones */
@@ -389,13 +454,13 @@
 }
 
 @media (min-width: 820px) {
-  .hv { display: block; min-height: 660px; }
+  .hv { display: block; min-height: 680px; }
   .hv-phone { width: min(340px, 100%); margin: 30px auto 0; }
-  .hv-rail { margin: 24px auto 0; width: fit-content; }
+  .hv-rail { margin: 26px auto 0; width: fit-content; }
 
   /* Offsets are in px, not %, so the cards never ride up over the phone's
      header — they straddle its edges at the height of the chat thread. */
-  .hv-card { position: absolute; width: clamp(150px, 27%, 178px); z-index: 3; padding: 13px 14px; }
+  .hv-card { position: absolute; width: clamp(150px, 27%, 180px); z-index: 3; padding: 13px 15px; }
 
   /* The cards straddle the phone's edges by ~35px. Pad the thread by more
      than that, so the chat background still runs under them but no message
@@ -412,16 +477,16 @@
 
 .hv-now-title {
   display: block;
-  margin-top: 5px;
-  font-size: 15px;
+  margin-top: 6px;
+  font-size: 15.5px;
   font-weight: 600;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.016em;
   color: var(--ink);
 }
 
 .hv-now-line {
   display: block;
-  margin-top: 4px;
+  margin-top: 5px;
   font-size: 11.5px;
   line-height: 1.4;
   color: var(--mut);
@@ -430,18 +495,23 @@
 .hv-now-track {
   display: block;
   height: 3px;
-  margin-top: 11px;
+  margin-top: 12px;
   border-radius: 999px;
   background: var(--rule);
   overflow: hidden;
 }
 
-.hv-now-track i { display: block; height: 100%; background: var(--orange); transition: width 0.5s var(--ease); }
+.hv-now-track i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--orange), #FBA36A);
+  transition: width 0.5s var(--ease);
+}
 
 /* card · the outcome */
 .hv-out {
-  border-color: #F6D5B8;
-  background: var(--orange-tint);
+  border-color: var(--peach-2);
+  background: linear-gradient(150deg, var(--peach) 0%, #FFFDFA 100%);
   animation: hvmIn 0.42s var(--ease) both;
 }
 
@@ -449,10 +519,11 @@
 
 .hv-out-v {
   display: block;
-  margin-top: 4px;
-  font-size: 20px;
+  margin-top: 5px;
+  font-family: var(--display);
+  font-size: 23px;
   font-weight: 500;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.028em;
   color: var(--ink);
 }
 
@@ -474,30 +545,57 @@
 .hv-live-tag {
   padding: 2px 7px;
   border-radius: 999px;
-  background: var(--orange-soft);
-  color: var(--orange-text);
+  background: var(--orange);
+  color: var(--on-orange);
   font-family: var(--mono);
   font-size: 9px;
+  font-weight: 600;
   letter-spacing: 0.08em;
 }
 
-.hv-live dl { display: grid; gap: 6px; }
+.hv-live dl { display: grid; gap: 7px; }
 .hv-live dl > div { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
 .hv-live dt { font-size: 11px; color: var(--mut); }
 .hv-live dd { font-size: 11.5px; font-weight: 500; color: var(--ink); text-align: right; }
 
 /* ---- trust bar --------------------------------------------------------- */
 
-.trust { border-block: 1px solid var(--rule); background: var(--bone); padding-block: 20px; }
-
-.trust-in { display: grid; gap: 14px; }
-
-@media (min-width: 900px) {
-  .trust-in { grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 32px; }
+.trust {
+  position: relative;
+  border-bottom: 1px solid var(--rule);
+  background: linear-gradient(180deg, var(--cream), var(--bone));
+  padding-block: 24px;
 }
 
-.trust-label { font-size: 10px; letter-spacing: 0.15em; color: var(--faint); }
+.trust-in { display: grid; gap: 16px; }
 
-.trust-list { display: flex; flex-wrap: wrap; gap: 9px 28px; }
+@media (min-width: 900px) {
+  .trust-in { grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 36px; }
+}
 
-.trust-item { font-size: 14px; font-weight: 400; color: var(--body); }
+.trust-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: var(--faint);
+}
+
+.trust-label::after {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--rule-2);
+}
+
+.trust-list { display: flex; flex-wrap: wrap; gap: 10px 30px; }
+
+.trust-item {
+  font-size: 14.5px;
+  font-weight: 450;
+  color: var(--body);
+  transition: color 0.2s;
+}
+
+.trust-item:hover { color: var(--ink); }
