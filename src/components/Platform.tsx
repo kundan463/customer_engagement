@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { AGENTS, CAPABILITIES, FEATURED_AGENT } from '../data/platform'
 import { useReveal } from '../hooks'
-import { TELENOW_APP } from './Chrome'
+import { TELENOW_TEMPLATES, templateUrl } from './Chrome'
 import { CallButton } from './LiveAgent'
 import { Icon } from './Icon'
 
@@ -112,10 +112,15 @@ export function Agents() {
                 </li>
               ))}
             </ul>
+            {/* The sentence is one flex item, not five. Flex makes every
+                contiguous text run its own item, so the interleaved <code>
+                tags would shatter this line into narrow columns. */}
             <p className="fa-vars-foot">
               <Icon name="lock" size={13} />
-              A campaign cannot dial without <code>{'{customer_first_name}'}</code> and{' '}
-              <code>{'{phone_number}'}</code> — the rest only make the call more specific.
+              <span>
+                A campaign cannot dial without <code>{'{customer_first_name}'}</code> and{' '}
+                <code>{'{phone_number}'}</code> — the rest only make the call more specific.
+              </span>
             </p>
           </div>
         </CallButton>
@@ -128,7 +133,7 @@ export function Agents() {
               key={a.name}
               className={`ag card${open === a.name ? ' is-open' : ''}`}
               style={{ transitionDelay: `${n * 40}ms` }}
-              href={TELENOW_APP}
+              href={templateUrl(a.template)}
               target="_blank"
               rel="noopener noreferrer"
               onMouseEnter={() => setOpen(a.name)}
@@ -149,8 +154,10 @@ export function Agents() {
                 <p>{a.outcome}</p>
               </div>
 
+              {/* Only promise a template where one exists; the two without a
+                  published equivalent say where they actually go. */}
               <span className="ag-use">
-                Use this template
+                {a.template ? 'Use this template' : 'Browse the library'}
                 <Icon name="arrow" size={14} />
               </span>
             </a>
@@ -163,7 +170,7 @@ export function Agents() {
             revenue agents once the transcripts are believable.
           </p>
           <div className="cta-row">
-            <a href={TELENOW_APP} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
+            <a href={TELENOW_TEMPLATES} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
               Browse all templates
               <Icon name="arrow" size={16} />
             </a>

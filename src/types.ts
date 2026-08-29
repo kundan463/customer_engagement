@@ -81,6 +81,12 @@ export interface AgentCard {
   purpose: string
   channels: string[]
   outcome: string
+  /**
+   * Slug of the published template on telenow.ai/templates that does this
+   * job. Omitted where no published template does — those cards link to the
+   * library index rather than to a template about something else.
+   */
+  template?: string
 }
 
 export interface LaunchStep {

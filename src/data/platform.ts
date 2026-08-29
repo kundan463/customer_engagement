@@ -124,6 +124,7 @@ export const AGENTS: AgentCard[] = [
     purpose: 'Calls after delivery, asks openly, captures the rating and the verbatim behind it.',
     channels: ['Voice', 'WhatsApp'],
     outcome: 'Rated feedback on 3.4x more customers than an email survey',
+    template: 'post-call-csat-survey',
   },
   {
     name: 'Retention Agent',
@@ -131,6 +132,7 @@ export const AGENTS: AgentCard[] = [
     purpose: 'Reaches customers whose signals point at churn before they quietly stop buying.',
     channels: ['Voice', 'WhatsApp', 'Email'],
     outcome: 'Churn intent caught while it is still reversible',
+    template: 'subscription-cancel-retain',
   },
   {
     name: 'Survey Agent',
@@ -138,6 +140,7 @@ export const AGENTS: AgentCard[] = [
     purpose: 'Runs CSAT and NPS waves as conversations, with the reason attached to the score.',
     channels: ['Voice', 'SMS', 'Email'],
     outcome: 'Scores with a why, not a naked number',
+    template: 'nps-followup',
   },
   {
     name: 'Recommendation Agent',
@@ -159,6 +162,7 @@ export const AGENTS: AgentCard[] = [
     purpose: 'Answers the common questions from your knowledge base and escalates the rest.',
     channels: ['Voice', 'WhatsApp'],
     outcome: '95% resolved without a person; 5% handed over in 30s',
+    template: 'product-faq-assistant',
   },
   {
     name: 'Reactivation Agent',
@@ -166,6 +170,7 @@ export const AGENTS: AgentCard[] = [
     purpose: 'Reconnects customers who have gone past their normal repurchase cycle.',
     channels: ['Voice', 'WhatsApp', 'Email'],
     outcome: 'Dormant cohorts brought back without blanket discounting',
+    template: 'gym-membership-winback',
   },
   {
     name: 'Appointment Agent',
@@ -173,6 +178,7 @@ export const AGENTS: AgentCard[] = [
     purpose: 'Books, confirms, reschedules and reminds — writing straight into your calendar.',
     channels: ['Voice', 'SMS'],
     outcome: 'No-shows cut by confirming the day before',
+    template: 'appointment-reminder-confirm',
   },
   {
     name: 'Inbound Reception Agent',
@@ -180,6 +186,7 @@ export const AGENTS: AgentCard[] = [
     purpose: 'Picks up every incoming call, at any hour, in the caller’s own language.',
     channels: ['Voice'],
     outcome: 'Zero missed calls, including nights and Sundays',
+    template: 'front-desk-receptionist',
   },
   {
     name: 'Lead Qualification Agent',
@@ -187,6 +194,7 @@ export const AGENTS: AgentCard[] = [
     purpose: 'Collects requirements, budget and timeline, then routes only the ready ones.',
     channels: ['Voice', 'WhatsApp'],
     outcome: 'Sales time spent on qualified conversations only',
+    template: 'outbound-lead-qualifier',
   },
 ]
 

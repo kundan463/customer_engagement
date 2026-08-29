@@ -57,6 +57,11 @@ The rule is *serif for display, sans for chrome*: section headings, the hero,
 step titles, the agent name and every stat figure are serif; card titles, labels,
 buttons and table text are Inter 600 — the same split telenow.ai draws.
 
+The **wordmark** is Telenow's own: "Tele" reversed out of an `--ink` badge with
+"now" flush beside it. It is rebuilt from text rather than the PNG telenow.ai
+ships, so it stays crisp at any size, costs no request, and inverts itself on
+the navy footer — a white badge with navy text — which a flat bitmap cannot.
+
 ### Three oranges, on purpose
 
 `#F26B1D` measures **3.05:1 on white** and **3.05:1 against white text** — it
@@ -163,9 +168,30 @@ cannot dial without them — with `{product_names}` / `{order_id}` optional.
 `MAYA_AGENT` (`https://telenow.ai/p/5d6a425fcd5f`) is still defined in
 `Chrome.tsx` but deliberately unlinked, so re-enabling the redirect is one line.
 
-The ten cards below are templates, each linking to `TELENOW_APP` — still the bare
-`telenow.ai` root, since no console URL was known. **Repoint that constant** (e.g.
-`https://app.telenow.ai/agents`) and every template link follows.
+The ten cards below are templates, and each links to the **real published
+template** on `telenow.ai/templates/<slug>` — the page the visitor actually
+wants, not the site root. The slug lives on the agent in `data/platform.ts`:
+
+| Card | Template |
+| --- | --- |
+| Feedback Agent | `post-call-csat-survey` |
+| Retention Agent | `subscription-cancel-retain` |
+| Survey Agent | `nps-followup` |
+| Support Agent | `product-faq-assistant` |
+| Reactivation Agent | `gym-membership-winback` |
+| Appointment Agent | `appointment-reminder-confirm` |
+| Inbound Reception Agent | `front-desk-receptionist` |
+| Lead Qualification Agent | `outbound-lead-qualifier` |
+
+**Recommendation Agent** and **Offer Agent** carry no slug: nothing in the
+published library does cross-sell or discount delivery as its job, and sending
+someone to a template about something else is worse than sending them to the
+index. `templateUrl(undefined)` returns the library index, so adding a slug
+later is a one-line change and needs no component edit.
+
+The rule for adding one: link only where the template does the *same job*.
+Vertical flavour is fine — a receptionist is a receptionist — a different job
+is not.
 
 ### The phone is a device, not a rectangle
 
