@@ -100,10 +100,10 @@ src/
 │  ├─ Icon.tsx             one 24×24 stroke-icon set, referenced by key
 │  ├─ Chrome.tsx           nav, mobile sheet, sticky CTA, footer
 │  ├─ Hero.tsx             §1 hero + animated journey rail, trust bar
-│  ├─ Journey.tsx          §2 ten-step journey
-│  ├─ LiveCall.tsx         §3 conversation simulator
-│  ├─ Platform.tsx         §4 capabilities · §5 agent types
-│  ├─ Build.tsx            §6 launch steps + mocks · §7 architecture
+│  ├─ Build.tsx            §2 how businesses use it · §7 architecture
+│  ├─ Journey.tsx          §3 ten-step journey
+│  ├─ LiveCall.tsx         §4 conversation simulator
+│  ├─ Platform.tsx         §5 capabilities · §6 agent types
 │  ├─ Outcomes.tsx         §9 outcomes · §10 integrations · §11 security
 │  ├─ DemoGen.tsx          §13 demo generator
 │  └─ FinalCta.tsx         §14 final CTA
@@ -117,6 +117,9 @@ analytics dashboard and ROI calculator that were cut. Both sit outside
 
 ## The interactive pieces
 
+- **How businesses use it** (§2) — a five-step walkthrough that plays itself,
+  7s a step, each step swapping a realistic mock of the screen you would be on.
+  The only section built on **Framer Motion**; see below.
 - **Hero phone** — ten lifecycle stages, auto-advancing every 4.2s, pausable.
   The thread *accumulates* as it advances (2 messages at stage 1, 20 at stage 10)
   with three cards floating at the phone's edges that swap per stage.
@@ -129,6 +132,67 @@ analytics dashboard and ROI calculator that were cut. Both sit outside
   Primary use case includes **Other**, which reveals a free-text field and titles
   the generated workflow with whatever they type (falling back to the label if
   they leave it blank). Nothing is transmitted; the CTA opens WhatsApp to send.
+
+### Framer Motion, in one section only
+
+`Launch` (§2) is the page's showcase and the one place that pulls in **Framer
+Motion**. Everything else animates with CSS. It is written as **five acts of a
+film, not five screenshots** — each act plays its own contents rather than
+fading a finished picture in:
+
+| Act | What actually happens |
+| --- | --- |
+| 01 Import | rows land one by one; `4,180 rows mapped` counts up |
+| 02 Agent | the system prompt **types itself** behind a caret, then the four rules snap on in sequence — the one that is off stays off |
+| 03 Channels | the cascade line draws downward and each channel comes up as the line reaches it |
+| 04 Launch | **the line rings, a customer picks up**, the waveform goes live, and only then do 2,847 dialled, the progress bar and the four stats start moving |
+| 05 Monitor | the four result tiles count up to their real figures |
+
+Act 04 is the beat the section is built around: nothing counts until somebody
+answers. `answered` is a plain 1.5s timeout, and every number downstream is
+gated on it.
+
+Two helpers do most of the work. `Count` runs a number up inside a
+`MotionValue` rendered as a motion child, so ticking a counter never
+re-renders React. `Typed` animates a character index and slices the string.
+
+The stepper itself uses three more:
+
+- **The active card is one shared element.** `layoutId="lx-mark"` means the
+  white card *travels* to the step you picked instead of blinking out of one
+  and into another. The steps are different heights — the active one expands —
+  so the card has to be measured, not tweened between fixed offsets.
+- **The detail opens and closes** on a real `height: auto` animation via
+  `AnimatePresence`, which CSS still cannot do without a magic max-height.
+- **The acts cross-fade** in a shared grid cell, under a stage that holds its
+  height, so the column never resizes between screens. One take, one frame.
+
+Switches are cascaded by adding `.is-on`, not by tweening a colour: the track
+and the knob are already one CSS transition, and animating only the track in
+JS would slide the knob without it.
+
+Each act holds for as long as its own animation needs — `DWELL`, 6s to 9.6s —
+rather than a flat count that would cut the typing off mid-sentence.
+
+It is wrapped in `LazyMotion … features={domMax} strict`. `strict` makes the
+build fail on a stray `motion.div` (which would pull in the full component
+surface) rather than silently shipping it — every element here is `m.*`.
+
+**It costs 47.4 kB gzip** (88.5 → 136.0 kB of JS). Roughly 29.5 kB of that is
+Framer's base and **14 kB is `domMax`**, bought purely for `layoutId`; swapping
+`domMax` → `domAnimation` gets that 14 kB back and costs only the travelling
+card.
+
+**The walkthrough stops the moment you touch it.** Hover or focus pauses it;
+a click hands it over for good (`took`), and the dwell bar under the active
+step disappears so nothing moves without having said it would. It is gated on
+`useInView`, `usePageVisible` and `useReducedMotion`.
+
+That visibility gate is not decorative. `setInterval` keeps firing in a hidden
+tab; `requestAnimationFrame` — which drives Framer — does not. Left ungated,
+a backgrounded tab advances the act every few seconds while no enter or exit
+animation can complete, and the panels pile up in the DOM. I watched five
+stack up before adding the gate.
 
 ### The call runs on this page, in our own UI
 

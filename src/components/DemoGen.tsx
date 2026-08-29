@@ -81,7 +81,7 @@ export function DemoGen() {
   const offers = reached * 0.58 * 0.31
 
   return (
-    <section className="section" id="demo">
+    <section className="section section-alt" id="demo">
       <div className="wrap">
         <div className="sec-head sec-head-split">
           <div>

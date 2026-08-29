@@ -261,7 +261,10 @@
 
 .lx-steps { display: grid; gap: 3px; }
 
+.lx-item { position: relative; }
+
 .lx-step {
+  position: relative;
   display: flex;
   gap: 14px;
   width: 100%;
@@ -272,9 +275,49 @@
   transition: background 0.24s, border-color 0.24s;
 }
 
-.lx-step:hover { background: var(--white); }
+.lx-step:not(.is-active):hover { background: var(--cream); }
 
-.lx-step.is-active { background: var(--white); border-color: var(--rule); box-shadow: var(--sh-2); }
+/* The active card is its own element rather than a background on the button,
+   because one shared element can travel between steps. The button's own
+   children sit above it. */
+.lx-mark {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: var(--r);
+  border: 1px solid var(--rule);
+  background: linear-gradient(180deg, #FFFFFF 0%, #FDFCF9 100%);
+  box-shadow: var(--sh-2);
+}
+
+.lx-step > *:not(.lx-mark) { position: relative; z-index: 1; }
+
+/* The detail is measured open and closed, so it needs a block box that clips
+   its own overflow while the height animates. */
+.lx-reveal { display: block; overflow: hidden; }
+.lx-reveal .lx-step-text { display: block; padding-top: 8px; }
+.lx-reveal .lx-path { display: block; padding-top: 8px; }
+
+/* The dwell clock: how long this step holds before the walkthrough moves on. */
+.lx-tick {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 7px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--rule);
+  overflow: hidden;
+}
+
+.lx-tick i {
+  display: block;
+  height: 100%;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #FBA36A, var(--orange));
+  transform-origin: left center;
+  will-change: transform;
+}
 
 .lx-n {
   flex: none;
@@ -293,6 +336,8 @@
 
 .lx-step.is-active .lx-n { border-color: var(--orange); background: var(--orange); color: var(--on-orange); }
 
+.lx-step.is-active { padding-bottom: 19px; }
+
 .lx-step-body { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
 
 .lx-step-title { font-size: 16px; font-weight: 500; letter-spacing: -0.02em; color: var(--body); transition: color 0.24s; }
@@ -303,7 +348,16 @@
 
 .lx-path { font-size: 10.5px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--orange-text); line-height: 1.6; }
 
-.lx-view { padding: 14px; animation: stageIn 0.36s var(--ease); }
+/* Both panels occupy the same grid cell so the outgoing one fades beneath
+   the incoming one instead of the column collapsing between them. */
+.lx-viewport { display: grid; min-width: 0; }
+.lx-viewport > * { grid-area: 1 / 1; align-self: start; }
+
+/* One take, one frame: the stage holds its height across acts rather than
+   resizing under the reader between screens. */
+@media (min-width: 700px) { .lx-viewport { min-height: 396px; } }
+
+.lx-view { padding: 14px; }
 
 /* ---- shared mock chrome ---------------------------------------------- */
 
@@ -390,6 +444,98 @@
 .mock-tog.is-on .mock-sw, .mock-chan.is-on .mock-sw { background: var(--peach-2); }
 .mock-tog.is-on .mock-sw::after, .mock-chan.is-on .mock-sw::after { transform: translateX(12px); background: var(--orange); }
 
+/* ---- the call that starts act 04 -------------------------------------- */
+
+.mock-call {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 10px 12px;
+  border-radius: var(--r);
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  transition: border-color 0.32s, background 0.32s;
+}
+
+.mock-call.is-live { border-color: var(--peach-2); background: var(--orange-tint); }
+
+.mock-call-ico {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  flex: none;
+  border-radius: 50%;
+  border: 1px solid var(--rule-2);
+  background: var(--white);
+  color: var(--mut);
+  transition: color 0.32s, border-color 0.32s, background 0.32s;
+}
+
+.mock-call.is-live .mock-call-ico {
+  border-color: transparent;
+  background: var(--orange);
+  color: var(--on-orange);
+}
+
+.mock-call-id { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.mock-call-id strong { font-size: 12.5px; font-weight: 600; letter-spacing: -0.01em; color: var(--ink); }
+.mock-call-id > span { font-size: 11px; color: var(--mut); }
+
+.mock-wave {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 22px;
+  flex: 1;
+  min-width: 40px;
+  margin-left: auto;
+}
+
+.mock-wave i {
+  flex: 1;
+  min-width: 2px;
+  height: 100%;
+  border-radius: 2px;
+  background: var(--rule-2);
+  transform-origin: center;
+}
+
+.mock-call.is-live .mock-wave i { background: var(--orange); }
+
+.mock-call-state {
+  flex: none;
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.mock-call.is-live .mock-call-state { color: var(--orange-text); }
+
+/* Narrow enough and the waveform starts crowding the state label. Drop it to
+   its own line rather than squeezing both. */
+@media (max-width: 560px) {
+  .mock-call { flex-wrap: wrap; row-gap: 9px; }
+  .mock-call-id { flex: 1; }
+  .mock-call-state { order: 2; }
+  .mock-wave { order: 3; flex-basis: 100%; height: 18px; margin-left: 0; }
+}
+
+/* The cursor that follows the prompt as it writes. */
+.mock-caret {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  margin-left: 2px;
+  vertical-align: -0.15em;
+  border-radius: 1px;
+  background: var(--orange);
+  animation: caretBlink 1.05s steps(1, end) infinite;
+}
+
+@keyframes caretBlink { 0%, 55% { opacity: 1; } 56%, 100% { opacity: 0; } }
+
 .mock-kb > div { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 9px; }
 
 .mock-file {
@@ -407,7 +553,20 @@
 
 .mock-file .ico { color: var(--orange-text); }
 
-.mock-chans { display: grid; gap: 7px; }
+.mock-chans { position: relative; display: grid; gap: 7px; }
+
+/* The line the cascade runs down. It draws itself as the channels come up,
+   which is what turns a list of four rows into an order of preference. */
+.mock-chan-line {
+  position: absolute;
+  left: 26px;
+  top: 22px;
+  bottom: 22px;
+  width: 1.5px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, var(--orange), var(--peach-2));
+  transform-origin: top center;
+}
 
 .mock-chan {
   display: flex;

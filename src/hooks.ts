@@ -45,6 +45,28 @@ export function usePrefersReducedMotion() {
   return reduced
 }
 
+/**
+ * True while the page is actually on screen.
+ *
+ * `setInterval` keeps firing in a backgrounded tab (throttled, but firing),
+ * while every animation library — Framer Motion included — is driven by
+ * `requestAnimationFrame`, which is not. An auto-advancing walkthrough left
+ * running in a hidden tab therefore steps forward while nothing can animate,
+ * stacking up panels whose enter and exit transitions never complete. Gate
+ * anything self-advancing on this.
+ */
+export function usePageVisible() {
+  const [visible, setVisible] = useState(
+    typeof document === 'undefined' || document.visibilityState !== 'hidden',
+  )
+  useEffect(() => {
+    const on = () => setVisible(document.visibilityState !== 'hidden')
+    document.addEventListener('visibilitychange', on)
+    return () => document.removeEventListener('visibilitychange', on)
+  }, [])
+  return visible
+}
+
 /** setInterval as an effect; pass `null` to pause. */
 export function useInterval(fn: () => void, ms: number | null) {
   const saved = useRef(fn)

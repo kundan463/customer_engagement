@@ -16,11 +16,15 @@ export default function App() {
       <main>
         <Hero />              {/* 1  · hero + journey rail            */}
         <TrustBar />
-        <Journey />           {/* 2  · the ten-step journey           */}
-        <LiveCall />          {/* 3  · live conversation simulator    */}
-        <Platform />          {/* 4  · platform capabilities          */}
-        <Agents />            {/* 5  · agent types                    */}
-        <Launch />            {/* 6  · how businesses launch          */}
+        {/* "How businesses use it" leads, directly under the hero: the first
+            question a visitor has is what using this actually looks like. It
+            answers that in five self-playing steps before the page asks them
+            to read anything longer. */}
+        <Launch />            {/* 2  · how businesses use it          */}
+        <Journey />           {/* 3  · the ten-step journey           */}
+        <LiveCall />          {/* 4  · live conversation simulator    */}
+        <Platform />          {/* 5  · platform capabilities          */}
+        <Agents />            {/* 6  · agent types                    */}
         <Architecture />      {/* 7  · automation architecture        */}
         <BusinessOutcomes />  {/* 9  · business outcomes              */}
         <Integrations />      {/* 10 · integrations                   */}
