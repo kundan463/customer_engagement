@@ -4,6 +4,12 @@ export type Tone = 'aqua' | 'rev' | 'steel'
 export interface Line {
   who: 'AI' | 'CX' | 'SYS'
   text: string
+  /** Renders as a WhatsApp voice note or a reward card instead of a bubble. */
+  kind?: 'voice' | 'reward'
+  /** voice: clip length. reward: the headline amount. */
+  value?: string
+  /** reward: the coupon code. */
+  code?: string
 }
 
 /** Hero stage — one node on the animated customer-journey rail. */
@@ -153,6 +159,8 @@ export interface DemoForm {
   industry: string
   volume: string
   useCase: string
+  /** Free text, only used when `useCase` is 'other'. */
+  useCaseOther: string
   channels: string[]
   email: string
   phone: string

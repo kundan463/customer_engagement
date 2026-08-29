@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { CallButton } from './LiveAgent'
 import { Icon } from './Icon'
 
 export const WA_LINK =
@@ -12,6 +13,13 @@ export const PHONE = '+91 91100 35665'
  * (e.g. https://app.telenow.ai/agents) and every template link follows.
  */
 export const TELENOW_APP = 'https://telenow.ai'
+
+/**
+ * The published Post-Purchase Assistant. Deliberately NOT linked from the page:
+ * the call simulator IS this agent, so visitors hear it here rather than being
+ * sent away. Kept so re-enabling the redirect is a one-line change.
+ */
+export const MAYA_AGENT = 'https://telenow.ai/p/5d6a425fcd5f'
 
 const LINKS = [
   { href: '#journey', label: 'Journey' },
@@ -64,10 +72,10 @@ export function Nav() {
         </nav>
 
         <div className="nav-actions">
-          <a href="#conversation" className="btn btn-ghost btn-sm nav-hide-sm">
-            <Icon name="play" size={15} />
+          <CallButton className="btn btn-ghost btn-sm nav-hide-sm">
+            <Icon name="voice" size={15} />
             Live agent
-          </a>
+          </CallButton>
           <a href="#demo" className="btn btn-primary btn-sm">Book demo</a>
           <button
             className="nav-burger"
@@ -99,10 +107,10 @@ export function Nav() {
 export function StickyCta() {
   return (
     <div className="sticky-cta">
-      <a href="#conversation" className="btn btn-ghost btn-sm">
-        <Icon name="play" size={15} />
+      <CallButton className="btn btn-ghost btn-sm">
+        <Icon name="voice" size={15} />
         Live agent
-      </a>
+      </CallButton>
       <a href="#demo" className="btn btn-primary btn-sm">Book demo</a>
     </div>
   )

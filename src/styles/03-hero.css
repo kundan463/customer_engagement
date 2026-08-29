@@ -39,13 +39,6 @@
 
 .hero-em { color: var(--orange-display); }
 
-.hero-hindi {
-  margin-top: 12px;
-  font-size: clamp(16px, 1.7vw, 19px);
-  font-weight: 500;
-  color: var(--mut);
-}
-
 .hero-sub {
   margin-top: 18px;
   font-size: clamp(15px, 1.5vw, 17px);
@@ -97,24 +90,75 @@
   gap: 16px;
 }
 
+/* A wash rather than an object: gives the white page depth behind the phone
+   without adding anything the reader has to parse. */
+.hv::before {
+  content: '';
+  position: absolute;
+  inset: -6% -12% 4%;
+  z-index: 0;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 50% 45%, rgba(249, 115, 22, 0.10), rgba(249, 115, 22, 0.03) 45%, transparent 70%);
+  filter: blur(24px);
+  pointer-events: none;
+}
+
 /* ---- the phone --------------------------------------------------------- */
 
 .hv-phone {
   position: relative;
   z-index: 2;
-  width: min(300px, 86vw);
-  border-radius: 30px;
-  border: 8px solid var(--ink);
-  background: var(--ink);
-  box-shadow: 0 30px 60px -30px rgba(10, 10, 10, 0.45);
+  width: min(340px, 88vw);
+  padding: 11px;
+  border-radius: 54px;
+  /* a machined edge: light catches the top-left, falls away to the right */
+  background: linear-gradient(152deg, #47474F 0%, #1B1B1F 16%, #141417 50%, #1B1B1F 84%, #3E3E46 100%);
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.55),
+    0 46px 84px -36px rgba(10, 10, 10, 0.62),
+    0 10px 22px -12px rgba(10, 10, 10, 0.28),
+    inset 0 1px 1px rgba(255, 255, 255, 0.26);
+}
+
+/* the side buttons — volume left, power right */
+.hv-phone::before,
+.hv-phone::after {
+  content: '';
+  position: absolute;
+  width: 3px;
+  border-radius: 3px;
+  background: linear-gradient(180deg, #4C4C55, #26262B);
+}
+
+.hv-phone::before { left: -3px; top: 116px; height: 58px; }
+.hv-phone::after { right: -3px; top: 138px; height: 78px; }
+
+.hv-screen {
+  position: relative;
+  border-radius: 43px;
   overflow: hidden;
+  background: #EDE7DE;
+}
+
+/* the notch sits over the screen, the way it does on a real handset */
+.hv-notch {
+  position: absolute;
+  z-index: 5;
+  top: 11px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 104px;
+  height: 26px;
+  border-radius: 999px;
+  background: #08080A;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
 }
 
 .hv-phone-head {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 13px 14px 11px;
+  padding: 46px 15px 12px;
   background: #0F5C52;
   color: #fff;
 }
@@ -122,27 +166,27 @@
 .hv-avatar {
   display: grid;
   place-items: center;
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   flex: none;
   background: #0A423B;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
 }
 
 .hv-phone-head > div { display: flex; flex-direction: column; min-width: 0; }
-.hv-phone-head strong { font-size: 13.5px; font-weight: 600; letter-spacing: -0.01em; }
-.hv-phone-head span { font-size: 10.5px; opacity: 0.82; }
+.hv-phone-head strong { font-size: 14.5px; font-weight: 600; letter-spacing: -0.01em; }
+.hv-phone-head span { font-size: 11px; opacity: 0.82; }
 
 .hv-callbar {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 14px;
+  padding: 9px 15px;
   background: #167D6F;
   color: #fff;
-  font-size: 11px;
+  font-size: 11.5px;
 }
 
 .hv-callbar .ico { flex: none; }
@@ -152,8 +196,8 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  height: 310px;
-  padding: 14px 12px;
+  height: 380px;
+  padding: 16px 13px;
   overflow-y: auto;
   scrollbar-width: thin;
   background: #EDE7DE;
@@ -173,9 +217,9 @@
 @keyframes hvmIn { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: none; } }
 
 .hvm-bubble {
-  padding: 8px 11px;
-  border-radius: 11px;
-  font-size: 12.5px;
+  padding: 9px 12px;
+  border-radius: 12px;
+  font-size: 13px;
   line-height: 1.45;
   color: var(--ink);
   background: #fff;
@@ -185,12 +229,74 @@
 .hvm-ai .hvm-bubble { border-top-left-radius: 3px; }
 .hvm-cx .hvm-bubble { background: #DCF3C6; border-top-right-radius: 3px; }
 
+.hvm-time {
+  display: block;
+  margin-top: 3px;
+  font-size: 10px;
+  line-height: 1;
+  text-align: right;
+  color: var(--mut);
+}
+
+/* ---- a WhatsApp voice note ---- */
+
+.hvm-voice { display: flex; align-items: center; gap: 9px; padding: 9px 11px; flex-wrap: wrap; }
+
+.hvm-play {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  flex: none;
+  border-radius: 50%;
+  background: #0F5C52;
+  color: #fff;
+}
+
+.hvm-wave { display: flex; align-items: center; gap: 2px; height: 20px; flex: 1; min-width: 60px; }
+.hvm-wave i { flex: 1; min-width: 2px; border-radius: 2px; background: #93A499; }
+
+.hvm-dur { font-size: 10px; color: var(--mut); flex: none; }
+.hvm-voice .hvm-time { width: 100%; margin-top: 0; }
+
+/* ---- the coupon, as it actually lands ---- */
+
+.hvm-reward {
+  display: flex;
+  flex-direction: column;
+  padding: 12px 13px;
+  border: 1px solid #F0D6BC;
+  background: #FFF8F2;
+}
+
+.hvm-reward-k { font-size: 9px; letter-spacing: 0.13em; color: var(--faint); }
+
+.hvm-reward-v {
+  margin-top: 3px;
+  font-size: 21px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: var(--orange-text);
+}
+
+.hvm-reward-code {
+  align-self: flex-start;
+  margin-top: 8px;
+  padding: 4px 9px;
+  border-radius: 5px;
+  border: 1px dashed #E8BE99;
+  background: #fff;
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  color: var(--orange-text);
+}
+
 .hvm-sys {
   display: block;
   padding: 5px 10px;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.78);
-  font-size: 9.5px;
+  font-size: 10px;
   line-height: 1.4;
   text-align: center;
   color: #5C5C5C;
@@ -283,22 +389,22 @@
 }
 
 @media (min-width: 820px) {
-  .hv { display: block; min-height: 520px; }
-  .hv-phone { width: min(288px, 100%); margin: 34px auto 0; }
-  .hv-rail { margin: 20px auto 0; width: fit-content; }
+  .hv { display: block; min-height: 660px; }
+  .hv-phone { width: min(340px, 100%); margin: 30px auto 0; }
+  .hv-rail { margin: 24px auto 0; width: fit-content; }
 
   /* Offsets are in px, not %, so the cards never ride up over the phone's
      header — they straddle its edges at the height of the chat thread. */
-  .hv-card { position: absolute; width: clamp(158px, 29%, 190px); z-index: 3; padding: 12px 13px; }
+  .hv-card { position: absolute; width: clamp(150px, 27%, 178px); z-index: 3; padding: 13px 14px; }
 
-  /* The cards straddle the phone's edges by ~28px. Pad the thread by more
+  /* The cards straddle the phone's edges by ~35px. Pad the thread by more
      than that, so the chat background still runs under them but no message
      text ever hides behind one. */
-  .hv-thread { padding-inline: 34px; }
+  .hv-thread { padding-inline: 48px; }
 
-  .hv-out { top: 88px; right: 0; }
-  .hv-now { top: 150px; left: 0; }
-  .hv-live { top: 298px; left: 0; }
+  .hv-out { top: 192px; right: 0; }
+  .hv-now { top: 250px; left: 0; }
+  .hv-live { top: 404px; left: 0; }
 }
 
 /* card · where we are */

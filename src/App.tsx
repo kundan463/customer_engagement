@@ -3,6 +3,7 @@ import { Footer, Nav, StickyCta } from './components/Chrome'
 import { DemoGen } from './components/DemoGen'
 import { FinalCta } from './components/FinalCta'
 import { Hero, TrustBar } from './components/Hero'
+import { CallProvider } from './components/LiveAgent'
 import { Journey } from './components/Journey'
 import { LiveCall } from './components/LiveCall'
 import { BusinessOutcomes, Integrations, Security } from './components/Outcomes'
@@ -10,7 +11,7 @@ import { Agents, Platform } from './components/Platform'
 
 export default function App() {
   return (
-    <>
+    <CallProvider>
       <Nav />
       <main>
         <Hero />              {/* 1  · hero + journey rail            */}
@@ -29,6 +30,6 @@ export default function App() {
       </main>
       <Footer />
       <StickyCta />
-    </>
+    </CallProvider>
   )
 }

@@ -482,3 +482,17 @@
 .lc-outcomes li.is-in .ico { color: var(--orange); }
 
 .lc-cta { margin-top: 15px; }
+
+.lc-cta-alt {
+  display: block;
+  margin-top: 10px;
+  font-size: 12px;
+  text-align: center;
+  color: var(--mut);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--rule-2);
+  transition: color 0.18s;
+}
+
+.lc-cta-alt:hover { color: var(--ink); }

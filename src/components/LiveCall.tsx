@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { CALLS } from '../data/calls'
 import { usePrefersReducedMotion, useReveal } from '../hooks'
+import { CallButton } from './LiveAgent'
 import { Icon } from './Icon'
 
 /** Demo speed. A 48-second call replays in about 22 seconds. */
@@ -256,10 +257,11 @@ export function LiveCall() {
                     </li>
                   ))}
                 </ul>
-                <a href="#demo" className="btn btn-primary btn-sm btn-block lc-cta">
-                  Run this on your customers
-                  <Icon name="arrow" size={15} />
-                </a>
+                <CallButton className="btn btn-primary btn-sm btn-block lc-cta">
+                  Talk to Maya yourself
+                  <Icon name="voice" size={15} />
+                </CallButton>
+                <a href="#demo" className="lc-cta-alt">Or book a demo for your brand</a>
               </div>
             </div>
           </div>

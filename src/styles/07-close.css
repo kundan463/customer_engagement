@@ -334,3 +334,203 @@
 .fc-notes li { display: flex; align-items: flex-start; gap: 9px; font-size: 12.5px; line-height: 1.45; color: var(--mut); }
 
 .fc-notes .ico { flex: none; color: var(--orange); margin-top: 1px; }
+
+/* =====================================================================
+   The live call — our chrome around Telenow's embed
+   ===================================================================== */
+
+.cm {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(18, 16, 12, 0.46);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: cmIn 0.24s var(--ease);
+}
+
+@keyframes cmIn { from { opacity: 0; } to { opacity: 1; } }
+
+.cm-panel {
+  width: min(430px, 100%);
+  max-height: calc(100vh - 40px);
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
+  border: 1px solid var(--rule);
+  background: var(--white);
+  box-shadow: 0 40px 80px -30px rgba(10, 10, 10, 0.5), var(--sh-3);
+  overflow: hidden;
+  animation: cmUp 0.32s var(--ease);
+}
+
+.cm-panel.is-live { width: min(420px, 100%); }
+
+@keyframes cmUp { from { opacity: 0; transform: translateY(14px) scale(0.985); } to { opacity: 1; transform: none; } }
+
+.cm-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 16px 15px 18px;
+  border-bottom: 1px solid var(--rule);
+  background: linear-gradient(180deg, var(--orange-tint), var(--white));
+}
+
+.cm-avatar {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  flex: none;
+  border-radius: 50%;
+  background: linear-gradient(150deg, #FFB067, var(--orange));
+  color: #12060A;
+  font-size: 17px;
+  font-weight: 600;
+  box-shadow: var(--sh-brand);
+}
+
+.cm-id { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.cm-id strong { font-size: 15px; font-weight: 600; letter-spacing: -0.02em; color: var(--ink); }
+
+.cm-id span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  color: var(--mut);
+}
+
+.cm-id .dot { color: var(--orange); }
+
+.cm-close {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  margin-left: auto;
+  flex: none;
+  border-radius: 50%;
+  border: 1px solid var(--rule-2);
+  color: var(--mut);
+  transition: color 0.18s, border-color 0.18s;
+}
+
+.cm-close:hover { color: var(--ink); border-color: var(--ink); }
+.cm-close .ico { transform: rotate(180deg); }
+
+/* ---- the form that fills the agent's required variables ---------------- */
+
+.cm-form { padding: 20px 18px 18px; overflow-y: auto; }
+
+.cm-lede { font-size: 13.5px; line-height: 1.6; color: var(--mut); margin-bottom: 18px; }
+
+.cm-field { display: block; margin-bottom: 15px; }
+
+.cm-field > span {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 7px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.cm-field i {
+  font-style: normal;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: var(--orange);
+  color: #0A0A0A;
+  font-family: var(--mono);
+  font-size: 8.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.cm-field i.is-opt { background: transparent; border: 1px solid var(--rule-2); color: var(--faint); font-weight: 400; }
+
+.cm-field input {
+  width: 100%;
+  height: 46px;
+  padding: 0 14px;
+  border-radius: var(--r);
+  border: 1px solid var(--rule-2);
+  background: var(--white);
+  color: var(--ink);
+  font-size: 14.5px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.cm-field input:focus {
+  outline: none;
+  border-color: var(--orange);
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.14);
+}
+
+.cm-field em {
+  display: block;
+  margin-top: 6px;
+  font-style: normal;
+  font-size: 10.5px;
+  color: var(--faint);
+}
+
+.cm-go { margin-top: 4px; }
+.cm-go:disabled { opacity: 0.45; cursor: not-allowed; box-shadow: none; transform: none; }
+
+.cm-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 14px;
+  font-size: 11.5px;
+  line-height: 1.55;
+  color: var(--mut);
+}
+
+.cm-note .ico { flex: none; margin-top: 2px; color: var(--orange); }
+
+/* ---- the embed itself -------------------------------------------------- */
+
+.cm-frame {
+  width: 100%;
+  height: min(560px, calc(100vh - 200px));
+  border: none;
+  background: var(--white);
+}
+
+.cm-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 11px 16px;
+  border-top: 1px solid var(--rule);
+  background: var(--paper);
+}
+
+.cm-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  color: var(--mut);
+  transition: color 0.18s;
+}
+
+.cm-back:hover { color: var(--ink); }
+.cm-foot .mono { font-size: 9.5px; letter-spacing: 0.11em; text-transform: uppercase; color: var(--faint); }
+
+/* the featured agent card is a button now, so reset the UA styles */
+.fa { width: 100%; text-align: left; font: inherit; color: inherit; cursor: pointer; }
+
+
+/* The free-text that appears when the use case is "Other". */
+.dg-other { animation: stageIn 0.28s var(--ease); }

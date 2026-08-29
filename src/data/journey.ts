@@ -26,7 +26,7 @@ export const STAGES: Stage[] = [
     desc: 'Not an IVR and not a robocall. It greets by name, says why it is calling, and asks whether now is a good time.',
     lines: [
       { who: 'AI', text: 'Hi Ananya, this is Maya — just checking in on your order. Is now an okay time?' },
-      { who: 'CX', text: 'Yeah, go ahead.' },
+      { who: 'CX', text: 'Yeah, go ahead.', kind: 'voice', value: '0:08' },
     ],
     outcomeLabel: 'Answer rate',
     outcomeValue: '3.4x survey',
@@ -85,7 +85,7 @@ export const STAGES: Stage[] = [
     title: 'The coupon lands before she hangs up',
     desc: 'Generated post-call by the workflow engine — a real code against a real SKU, on the channel she chose, with consent recorded.',
     lines: [
-      { who: 'SYS', text: 'WhatsApp delivered 11:04 · code ANYA20 · SKU MSK-014' },
+      { who: 'AI', text: 'Your reward', kind: 'reward', value: '20% off', code: 'ANYA20' },
       { who: 'SYS', text: 'expires in 7d · single use · opt-in on file' },
     ],
     outcomeLabel: 'Delivery',

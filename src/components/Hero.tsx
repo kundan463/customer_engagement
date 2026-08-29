@@ -5,6 +5,17 @@ import { Icon } from './Icon'
 
 const ADVANCE_MS = 4200
 
+/** A voice note's bar heights — deterministic, so the shape never jitters. */
+const WAVE = Array.from({ length: 26 }, (_, i) =>
+  34 + Math.abs(Math.sin(i * 1.31) * Math.cos(i * 0.47)) * 62,
+)
+
+/** Wall-clock for the thread: one minute per message from 10:24. */
+const stamp = (n: number) => {
+  const m = 24 + n
+  return `${10 + Math.floor(m / 60)}:${String(m % 60).padStart(2, '0')}`
+}
+
 const VERTICALS = [
   'D2C & retail',
   'Beauty & personal care',
@@ -45,14 +56,12 @@ export function Hero() {
         <div className="hero-copy">
           <span className="pill hero-badge">
             <span className="dot dot-live" />
-            AI customer engagement platform
+            Telenow AI customer engagement platform
           </span>
 
           <h1 className="hero-h1">
             Built For D2C.<br />Powered By <span className="hero-em">Voice</span>.
           </h1>
-
-          <p className="hero-hindi hindi">हर ग्राहक, सुनी गई.</p>
 
           <p className="hero-sub">
             Automate every customer conversation after purchase — collect feedback,
@@ -112,7 +121,7 @@ export function Hero() {
               <span className="hv-live-tag">LIVE</span>
             </div>
             <dl>
-              <div><dt>Agent</dt><dd>Maya · Feedback</dd></div>
+              <div><dt>Agent</dt><dd>Maya</dd></div>
               <div><dt>Channels</dt><dd>Voice + WA</dd></div>
               <div><dt>Languages</dt><dd>Hindi + 4</dd></div>
             </dl>
@@ -120,33 +129,57 @@ export function Hero() {
 
           {/* the phone */}
           <div className="hv-phone">
-            <div className="hv-phone-head">
-              <span className="hv-avatar">A</span>
-              <div>
-                <strong>Ananya R</strong>
-                <span>online · Hindi + English</span>
-              </div>
-            </div>
+            <span className="hv-notch" aria-hidden="true" />
 
-            <div className="hv-callbar">
-              <Icon name="phone" size={13} />
-              <span>Telenow AI · voice call</span>
-              <span className="hv-callbar-t mono">01:24</span>
-            </div>
-
-            <div className="hv-thread" ref={threadRef}>
-              {thread.map((l) => (
-                <div
-                  key={l.key}
-                  className={`hvm hvm-${l.who.toLowerCase()}${l.fresh ? ' is-fresh' : ''}`}
-                >
-                  {l.who === 'SYS' ? (
-                    <span className="hvm-sys mono">{l.text}</span>
-                  ) : (
-                    <p className="hvm-bubble">{l.text}</p>
-                  )}
+            <div className="hv-screen">
+              <div className="hv-phone-head">
+                <span className="hv-avatar">A</span>
+                <div>
+                  <strong>Ananya R</strong>
+                  <span>online · Hindi + English</span>
                 </div>
-              ))}
+              </div>
+
+              <div className="hv-callbar">
+                <Icon name="phone" size={13} />
+                <span>Telenow AI · voice call</span>
+                <span className="hv-callbar-t mono">01:24</span>
+              </div>
+
+              <div className="hv-thread" ref={threadRef}>
+                {thread.map((l, n) => (
+                  <div
+                    key={l.key}
+                    className={`hvm hvm-${l.who.toLowerCase()}${l.fresh ? ' is-fresh' : ''}`}
+                  >
+                    {l.who === 'SYS' ? (
+                      <span className="hvm-sys mono">{l.text}</span>
+                    ) : l.kind === 'voice' ? (
+                      <span className="hvm-bubble hvm-voice">
+                        <span className="hvm-play"><Icon name="play" size={11} /></span>
+                        <span className="hvm-wave" aria-hidden="true">
+                          {WAVE.map((h, k) => <i key={k} style={{ height: `${h}%` }} />)}
+                        </span>
+                        <span className="hvm-dur mono">{l.value}</span>
+                        <span className="sr-only">Voice note: {l.text}</span>
+                        <span className="hvm-time mono">{stamp(n)}</span>
+                      </span>
+                    ) : l.kind === 'reward' ? (
+                      <span className="hvm-bubble hvm-reward">
+                        <span className="hvm-reward-k mono">YOUR REWARD</span>
+                        <strong className="hvm-reward-v">{l.value}</strong>
+                        <span className="hvm-reward-code mono">{l.code}</span>
+                        <span className="hvm-time mono">{stamp(n)}</span>
+                      </span>
+                    ) : (
+                      <p className="hvm-bubble">
+                        {l.text}
+                        <span className="hvm-time mono">{stamp(n)}</span>
+                      </p>
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 

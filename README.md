@@ -89,22 +89,69 @@ analytics dashboard and ROI calculator that were cut. Both sit outside
 
 ## The interactive pieces
 
-- **Hero rail** — ten lifecycle stages, auto-advancing every 4.2s, pausable, each
-  with a transcript preview and the outcome that stage produces.
+- **Hero phone** — ten lifecycle stages, auto-advancing every 4.2s, pausable.
+  The thread *accumulates* as it advances (2 messages at stage 1, 20 at stage 10)
+  with three cards floating at the phone's edges that swap per stage.
 - **Journey stepper** — the same ten beats opened up: visual card, example
   conversation, business outcome. Arrow keys work.
 - **Call simulator** — five call types (feedback, upsell, support, survey,
   reorder) playing at 2.2×, with a scrubbable waveform, live sentiment, detected
   intent, and the post-call analysis fields filling in as the call closes.
 - **Demo generator** — builds a personalised workflow diagram client-side.
-  Nothing is transmitted; the CTA opens WhatsApp for the user to send.
+  Primary use case includes **Other**, which reveals a free-text field and titles
+  the generated workflow with whatever they type (falling back to the label if
+  they leave it blank). Nothing is transmitted; the CTA opens WhatsApp to send.
 
-### Agent templates link into the product
+### The call runs on this page, in our own UI
 
-Every card in §5 is a link to `TELENOW_APP` in `Chrome.tsx`, as is the "Browse
-all templates" button under the grid. Only the `telenow.ai` domain was known, so
-that constant points at the root — **repoint it at the real console** (e.g.
-`https://app.telenow.ai/agents`) and all eleven links follow.
+`LiveAgent.tsx` puts the real agent behind a premium modal, opened from the nav,
+the sticky mobile bar, the call simulator and the featured agent card (a React
+context, so no prop-drilling through four components).
+
+**It does not load `widget.js`.** That script only does two things: build an
+iframe URL, and inject a fixed indigo bubble bottom-right. It exposes no JS API —
+everything is inside a closure — so there is nothing to drive it with, and using
+it would mean shipping a launcher we then had to hide. So `embedUrl()` builds the
+same URL itself, exactly as the script does (`?var_<name>=<value>` for every
+declared key, blanks included), and we wrap the iframe in our own chrome.
+
+The modal collects the agent's two **required** variables before it will start —
+`{customer_first_name}` and `{phone_number}`, submit stays disabled until both
+are filled — plus `{order_id}` as optional. `preferred_language` and
+`entry_channel` are set by the page. All twelve declared variables are sent every
+time, blanks included, exactly as `widget.js` does. The iframe carries
+`allow="microphone"`. Keep this form short: it is the thing standing between a
+visitor and hearing the agent.
+
+What is ours: the trigger, the modal, the form, the framing, the copy. What is
+not: the call surface inside the iframe is Telenow's own page on their origin,
+so it cannot be restyled from here. Changing how *that* looks means changing the
+embed at `telenow.ai`.
+
+### Nothing else redirects to the agent
+
+Section 5 leads with Post-Purchase Assistant (Maya). It does **not** redirect —
+the call simulator in §3 *is* that agent (`calls.ts`, first entry, role
+`Post-Purchase Assistant`), so the card jumps to `#conversation` rather than
+sending visitors away. Its card surfaces the agent's own `apiVariables`:
+`{customer_first_name}` and `{phone_number}` are marked **required** — a campaign
+cannot dial without them — with `{product_names}` / `{order_id}` optional.
+
+`MAYA_AGENT` (`https://telenow.ai/p/5d6a425fcd5f`) is still defined in
+`Chrome.tsx` but deliberately unlinked, so re-enabling the redirect is one line.
+
+The ten cards below are templates, each linking to `TELENOW_APP` — still the bare
+`telenow.ai` root, since no console URL was known. **Repoint that constant** (e.g.
+`https://app.telenow.ai/agents`) and every template link follows.
+
+### The phone is a device, not a rectangle
+
+Bezel with a machined gradient edge, a notch over the screen, side buttons, and a
+separate `.hv-screen` that clips the content (the frame can't, or the buttons
+would be cut off). The thread carries real WhatsApp objects: a **voice note**
+(play control, 26-bar waveform, duration — with the transcript in `sr-only` so
+nothing is lost) and the coupon as a **reward card**, both driven by an optional
+`kind` on `Line`. Timestamps run one minute per message from 10:24.
 
 ### The call clock is a timer, not rAF
 

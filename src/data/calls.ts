@@ -17,7 +17,7 @@ export const CALLS: Conversation[] = [
     id: 'feedback',
     tab: 'Feedback call',
     agent: 'Maya',
-    role: 'Feedback Agent',
+    role: 'Post-Purchase Assistant',
     initial: 'M',
     channel: 'Outbound voice',
     lang: 'English',

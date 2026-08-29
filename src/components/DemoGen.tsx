@@ -23,6 +23,7 @@ const USE_CASES = [
   { k: 'upsell', label: 'Cross-sell & upsell', agent: 'Recommendation Agent', gate: 'One SKU, gated on a positive call' },
   { k: 'support', label: 'Inbound support', agent: 'Support Agent', gate: 'Resolved or escalated in 30s' },
   { k: 'survey', label: 'CSAT / NPS surveys', agent: 'Survey Agent', gate: 'Score plus the reason behind it' },
+  { k: 'other', label: 'Other', agent: 'Custom agent', gate: 'Defined with you before launch' },
 ]
 
 const CHANNELS = ['Voice', 'WhatsApp', 'SMS', 'Email']
@@ -36,6 +37,7 @@ const VOLUME_N: Record<string, number> = {
 }
 
 const empty: DemoForm = {
+  useCaseOther: '',
   business: '',
   industry: INDUSTRIES[0],
   volume: VOLUMES[1],
@@ -53,6 +55,8 @@ export function DemoGen() {
   const { ref, className } = useReveal<HTMLDivElement>()
 
   const uc = USE_CASES.find((u) => u.k === f.useCase)!
+  // "Other" is only as specific as what they typed, so fall back gracefully.
+  const ucLabel = f.useCase === 'other' && f.useCaseOther.trim() ? f.useCaseOther.trim() : uc.label
   const vol = VOLUME_N[f.volume] ?? 5500
   const name = f.business.trim() || 'your brand'
 
@@ -145,6 +149,19 @@ export function DemoGen() {
               </div>
             </label>
 
+            {f.useCase === 'other' && (
+              <label className="dg-field dg-other">
+                <span>Tell us the use case</span>
+                <input
+                  type="text"
+                  value={f.useCaseOther}
+                  onChange={(e) => set('useCaseOther', e.target.value)}
+                  placeholder="e.g. delivery delay updates, subscription renewals"
+                  autoFocus
+                />
+              </label>
+            )}
+
             <label className="dg-field">
               <span>Preferred channels</span>
               <div className="dg-chips">
@@ -213,7 +230,7 @@ export function DemoGen() {
                 <div className="dg-flow-head">
                   <div>
                     <span className="mono">GENERATED WORKFLOW</span>
-                    <h3>{name} · {uc.label}</h3>
+                    <h3>{name} · {ucLabel}</h3>
                   </div>
                   <span className="pill t-aqua"><span className="dot dot-live" />ready</span>
                 </div>

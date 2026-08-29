@@ -92,6 +92,29 @@ export const CAPABILITIES: Capability[] = [
   },
 ]
 
+/* ---- Section 5 · the live agent, then the template library ------------- */
+
+/**
+ * The published agent behind every example on this page. `vars` mirrors the
+ * agent's own `apiVariables` — the two marked required are the minimum a
+ * campaign must supply before it can dial anyone.
+ */
+export const FEATURED_AGENT = {
+  name: 'Post-Purchase Assistant',
+  persona: 'Maya',
+  blurb:
+    'The agent this whole page is built around, and the one playing in the call simulator above. She calls after delivery, asks openly, captures the rating and the verbatim behind it, escalates anything serious to a human, and earns at most one recommendation.',
+  channels: ['Voice', 'WhatsApp'],
+  languages: 'English · Hindi · Hinglish',
+  vars: [
+    { name: 'customer_first_name', required: true, note: 'greets her by name' },
+    { name: 'phone_number', required: true, note: 'the number to reach' },
+    { name: 'product_names', required: false, note: 'what to ask about' },
+    { name: 'order_id', required: false, note: 'ties the call to the order' },
+  ],
+  outcomes: ['12 outcome codes', 'rating + verbatim', 'one earned offer'],
+}
+
 /* ---- Section 5 · agent types ------------------------------------------- */
 
 export const AGENTS: AgentCard[] = [

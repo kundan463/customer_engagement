@@ -1,7 +1,8 @@
 import { useState } from 'react'
-import { AGENTS, CAPABILITIES } from '../data/platform'
+import { AGENTS, CAPABILITIES, FEATURED_AGENT } from '../data/platform'
 import { useReveal } from '../hooks'
 import { TELENOW_APP } from './Chrome'
+import { CallButton } from './LiveAgent'
 import { Icon } from './Icon'
 
 /* ---- Section 4 -------------------------------------------------------- */
@@ -63,10 +64,61 @@ export function Agents() {
             <h2 className="h2">Deploy AI agents for any use case</h2>
           </div>
           <p className="lede">
-            Every agent is a different job with a different definition of a good
-            call. Start with one, add the next when the first is earning its keep.
+            Start with the one that is already live below, then add the next when
+            the first is earning its keep. Every agent is a different job with a
+            different definition of a good call.
           </p>
         </div>
+
+        {/* the published agent everything on this page is modelled on */}
+        <CallButton className="fa">
+          <div className="fa-main">
+            <div className="fa-head">
+              <span className="fa-avatar">{FEATURED_AGENT.persona[0]}</span>
+              <div className="fa-id">
+                <span className="fa-kicker mono">
+                  <span className="dot dot-live" />
+                  LIVE AGENT · CALL HER FROM THIS PAGE
+                </span>
+                <h3 className="fa-name">
+                  {FEATURED_AGENT.name} <em>({FEATURED_AGENT.persona})</em>
+                </h3>
+              </div>
+            </div>
+
+            <p className="fa-blurb">{FEATURED_AGENT.blurb}</p>
+
+            <div className="fa-meta">
+              {FEATURED_AGENT.channels.map((c) => (
+                <span key={c} className="ag-ch">{c}</span>
+              ))}
+              <span className="fa-langs">{FEATURED_AGENT.languages}</span>
+            </div>
+
+            <span className="btn btn-primary fa-cta">
+              Talk to {FEATURED_AGENT.persona} now
+              <Icon name="voice" size={15} />
+            </span>
+          </div>
+
+          <div className="fa-vars">
+            <span className="fa-vars-h mono">AGENT VARIABLES</span>
+            <ul>
+              {FEATURED_AGENT.vars.map((v) => (
+                <li key={v.name} className={v.required ? 'is-req' : ''}>
+                  <code>{`{${v.name}}`}</code>
+                  <span className="fa-var-note">{v.note}</span>
+                  <span className="fa-var-tag">{v.required ? 'required' : 'optional'}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="fa-vars-foot">
+              <Icon name="lock" size={13} />
+              A campaign cannot dial without <code>{'{customer_first_name}'}</code> and{' '}
+              <code>{'{phone_number}'}</code> — the rest only make the call more specific.
+            </p>
+          </div>
+        </CallButton>
 
         <div ref={ref} className={`ag-grid ${className}`}>
           {AGENTS.map((a, n) => (
